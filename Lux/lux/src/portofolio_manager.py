@@ -46,7 +46,14 @@ class Portofolio:
         console = Console()
         table = Table(title="Portofolio")
         table.add_column("Ticker", style="cyan", no_wrap=True)
-        table.add_column("30 days moments", style="cyan", no_wrap=True, justify="center",)
+        table.add_column("μθ30", style="cyan", no_wrap=True, justify="center")
+        table.add_column("μb30", style="cyan", no_wrap=True, justify="center")
+        table.add_column("μ30 now", style="cyan", no_wrap=True, justify="center")
+        table.add_column("zσψ30", style="cyan", no_wrap=True, justify="center")
+        table.add_column("zσb30", style="cyan", no_wrap=True, justify="center")
+        table.add_column("zσ3 now", style="cyan", no_wrap=True, justify="center")
+        table.add_column("zσ3 min/max|baseline.", style="cyan", no_wrap=True, justify="center")
+
         # table.add_column("30 days Var coeff", style="cyan", no_wrap=True)
         for ticker in self.prtf['tickers']:
             fetched = fetch_info(ticker, (end[0]-1,1,1), end)
@@ -54,7 +61,7 @@ class Portofolio:
             price_change_lowpass = fetched['Adj Close'].pct_change().rolling(30, win_type='gaussian').mean(std = 3)
             price_change_std = fetched['Adj Close'].pct_change().rolling(30, win_type='gaussian').std(std = 3)
 
-
+            baselinevar = np.std(price_change_std)
             price_change_std = (price_change_std - np.mean(price_change_std))/np.std(price_change_std)
             minimum_historic_std = np.min(price_change_std)
             maximum_historic_std = np.max(price_change_std)
@@ -62,27 +69,39 @@ class Portofolio:
             var_coeff, var_intercept = regress_input(price_change_std, N = 30)
             mean_now = price_change_lowpass[-1]
             var_now = price_change_std[-1]
-            moments = [mean_coeff, mean_intercept, mean_now, var_coeff, var_now, var_intercept]
+
+            moments = {'mean_coeff': {'value': mean_coeff, 'output_text': '', 'color': 'green/red'}, 
+                        'mean_intercept': {'value': mean_intercept, 'output_text': '', 'color': 'green/red'}, 
+                        'mean_now': {'value': mean_now, 'output_text': '', 'color':  'green/red'}, 
+                        'var_coeff': {'value': var_coeff, 'output_text': '', 'color': 'yellow'}, 
+                        'var_intercept': {'value': var_intercept, 'output_text': '', 'color': 'yellow'}, 
+                        'var_now': {'value': var_now, 'output_text': '', 'color': 'yellow'}, 
+                        'minimum_historic_std': {'value': minimum_historic_std, 'output_text': '', 'color': 'yellow'}, 
+                        'maximum_historic_std': {'value': maximum_historic_std, 'output_text': '', 'color': 'yellow'},
+                        'baseline_historic_std': {'value': baselinevar, 'output_text': '', 'color': 'yellow'}
+                        }
 
 
-            fig, ax = plt.subplots(3, 1)
-            ax[0].plot(fetched['Adj Close'], label = 'Price')
-            ax[1].plot(price_change_lowpass, label = 'Lowpass 30 days', alpha = 0.4)
-            ax[1].plot(fetched['Adj Close'].pct_change(), label = 'Returns', alpha = 0.4)
-            ax[2].plot(price_change_std, label = 'Lowpass standard deviation', alpha = 0.4)
-            ax[0].legend()
-            ax[1].legend()
-            ax[2].legend()
-            plt.show()
-            colors = {}
+            # fig, ax = plt.subplots(3, 1)
+            # ax[0].plot(fetched['Adj Close'], label = 'Price')
+            # ax[1].plot(price_change_lowpass, label = 'Lowpass 30 days', alpha = 0.4)
+            # ax[1].plot(fetched['Adj Close'].pct_change(), label = 'Returns', alpha = 0.4)
+            # ax[2].plot(price_change_std, label = 'Lowpass standard deviation', alpha = 0.4)
+            # ax[0].legend()
+            # ax[1].legend()
+            # ax[2].legend()
+            # plt.show()
             for moment in moments:
-                if moment > 0:
-                    colors[moment] = 'green'
-                elif moment < 0:
-                    colors[moment] = 'red'
+                
+                if moments[moment]['color'] == 'green/red':
+                    if moments[moment]['value'] > 0:
+                        color_output = 'green'
+                    else:
+                        color_output = 'red'
                 else:
-                    colors[moment] = 'yellow'
-            table.add_row(f"{ticker}", f"[bold {colors[moments[0]]}] {moments[0]:.5f} [/bold {colors[moments[0]]}](μψ30) [bold {colors[moments[1]]}] {moments[1]:.5f}[/bold {colors[moments[1]]}] [[bold {colors[moments[2]]}] {moments[2]:.5f} [/bold {colors[moments[2]]}]](μθ30) [bold {colors[moments[3]]}]{moments[3]:.5f} [/bold {colors[moments[3]]}](zσψ30) [bold {colors[moments[5]]}] {moments[5]:.5f} [/bold {colors[moments[5]]}][{minimum_historic_std:.5f}/{maximum_historic_std:.5f}][[bold {colors[moments[4]]}] {moments[4]:.5f} [/bold {colors[moments[4]]}]](zσθ30)")
+                    color_output = moments[moment]['color']
+                moments[moment]['output_text'] = f"[bold {color_output}] {moments[moment]['value']:.5f} [/bold {color_output}] "
+            table.add_row(ticker, moments['mean_coeff']['output_text'], moments['mean_intercept']['output_text'], moments['mean_now']['output_text'], moments['var_coeff']['output_text'], moments['var_intercept']['output_text'], moments['var_now']['output_text'], f"[{moments['minimum_historic_std']['output_text']}/{moments['maximum_historic_std']['output_text']}|{moments['baseline_historic_std']['output_text']}]")
 
         console.print(table)
 
