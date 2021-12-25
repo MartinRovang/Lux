@@ -1,4 +1,11 @@
-from lux import PriceFetcher
+from lux import portofolio_manager
 
-fetcher = PriceFetcher()
-print(fetcher.fetch_info('AFK.OL', (2021,1,1), (2021,5,1)))
+p = portofolio_manager.Portofolio()
+p.add_ticker('AFK.OL')
+p.add_ticker('YAR.OL')
+p.add_ticker('EQNR.OL')
+p.add_ticker('TEL.OL')
+p.get_stock_stats()
+
+
+

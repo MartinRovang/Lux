@@ -5,11 +5,14 @@ description = ""
 authors = ["MartinRovang <martinrovang@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "3.9"
 matplotlib = "^3.5.1"
 seaborn = "^0.11.2"
 pandas-datareader = "^0.10.0"
 DateTime = "^4.3"
+rich = "^10.16.1"
+scikit-learn = "^1.0.1"
+scipy = "^1.7.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
