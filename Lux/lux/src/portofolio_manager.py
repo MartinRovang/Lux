@@ -8,6 +8,10 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.statespace.structural import UnobservedComponents
+import pmdarima as pm
+from pmdarima import arima
+from pmdarima import utils
+
 import scipy
 import pandas as pd
 
@@ -26,6 +30,8 @@ class Portofolio:
             self.load_data()
         else:
             self.prtf = {'tickers': []}
+        
+        self.intfc.show_logo()
 
     def add_ticker(self, ticker):
         if ticker not in self.prtf['tickers']:
@@ -35,6 +41,7 @@ class Portofolio:
 
     def remove_ticker(self, ticker):
         if ticker in self.prtf:
+            print(f"Removing {ticker} from portofolio")
             self.prtf['tickers'].remove(ticker)
             self.write_data()
     
@@ -44,40 +51,20 @@ class Portofolio:
     def write_data(self):
         pickle.dump(self.prtf, open('lux/database/portofolio.pkl', 'wb'))
     
+    def normalize_max(self, df):
+        return df/df.max()
+    
+    def normalize_z(self, df):
+        return (df - df.mean())/df.std()
+    
 
     def get_stock_stats(self, N = 30):
         end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
-        tmp_fetch = []
-        self.intfc.make_table_moments()
+        col = ['Ticker', 'Trend[10/30]', 'Trendbias[10/30]', 'Confidence[10/30]']
+        self.intfc.make_table(col, tl = 'Portofolio')
         for ticker in self.prtf['tickers']:
             fetched = fetch_info(ticker, (end[0]-1,1,1), end)
-            tmp_fetch.append(fetched[["Volume", "Adj Close"]])
-            price_change_lowpass = fetched['Adj Close'].pct_change().rolling(10, win_type='gaussian').mean(std = 3)
-            price_change_std = fetched['Adj Close'].pct_change().rolling(10, win_type='gaussian').std(std = 3)
-    
-            baselinevar = np.std(price_change_std)
-            price_change_std = (price_change_std - np.mean(price_change_std))/np.std(price_change_std)
-            minimum_historic_std = np.min(price_change_std)
-            maximum_historic_std = np.max(price_change_std)
-            mean_coeff, mean_intercept, scoremean = regress_input(price_change_lowpass, N = N)
-            var_coeff, var_intercept, scorevar = regress_input(price_change_std, N = N)
-            mean_now = price_change_lowpass[-1]
-            var_now = price_change_std[-1]
-
-            moments = {'mean_coeff': {'value': mean_coeff, 'output_text': '', 'color': 'green/red'}, 
-                        'mean_intercept': {'value': mean_intercept, 'output_text': '', 'color': 'green/red'}, 
-                        'mean_now': {'value': mean_now, 'output_text': '', 'color':  'green/red'}, 
-                        'var_coeff': {'value': var_coeff, 'output_text': '', 'color': 'green/red'}, 
-                        'var_intercept': {'value': var_intercept, 'output_text': '', 'color': 'yellow'}, 
-                        'var_now': {'value': var_now, 'output_text': '', 'color': 'yellow'}, 
-                        'minimum_historic_std': {'value': minimum_historic_std, 'output_text': '', 'color': 'yellow'}, 
-                        'maximum_historic_std': {'value': maximum_historic_std, 'output_text': '', 'color': 'yellow'},
-                        'baseline_historic_std': {'value': baselinevar, 'output_text': '', 'color': 'yellow'},
-                        'scoremean': {'value': scoremean, 'output_text': '', 'color': 'yellow'},
-                        'scorevar': {'value': scorevar, 'output_text': '', 'color': 'yellow'}
-                        }
-
-
+            
 
             ser = fetched['Adj Close'].dropna()
 
@@ -91,37 +78,68 @@ class Portofolio:
             # print(res_f.summary())
             # res_f.plot_components()
             # plt.show()
-            error = 99999
-            for per in range(2, 120):
-                result = seasonal_decompose(ser, model='additive', period = per)
-                if np.sum(result.resid) < error:
-                    error = np.sum(result.resid)
+
+
+            # model = pm.auto_arima(ser, error_action='ignore', trace=True,
+            #           suppress_warnings=True, seasonal=True, m=13)
+            # forecasts, conf = model.predict(30, return_conf_int=True)  # predict N steps into the future
+            # trainlen = len(ser)
+            # predlen = 30
+            # x_axis = np.arange(trainlen + predlen)
+            # plt.plot(x_axis[:len(ser)], ser, c='blue')
+            # plt.plot(x_axis[-30:], forecasts, c='green')
+            # plt.fill_between(x_axis[-30:], conf[:, 0], conf[:, 1], color='orange', alpha=0.3)
+            # plt.show()
+
+            # figure_kwargs = {'figsize': (6, 6)}
+            # decomposed = arima.decompose(ser.values, 'additive', m=60)
+            # axes = utils.decomposed_plot(decomposed, figure_kwargs=figure_kwargs,
+            #                  show=False)
+            # axes[0].set_title(ticker)
+            # plt.show()
+
+            #ser = self.normalize_max(ser).dropna()
+            error = 99999999
+            for per in range(10, 60):
+                result = seasonal_decompose(ser, model='additive', period = per, two_sided = False)
+                get_sample = result.trend[-N:]
+                if np.std(get_sample) < error:
+                    error = np.std(get_sample)
                     per_best = per
-            print(per_best, error)
-            result = seasonal_decompose(ser, model='additive', period = per_best)
+            result = seasonal_decompose(ser, model='additive', period = per_best, two_sided = False)
+            # result.plot()
+            # plt.suptitle(ticker)
+            # plt.show()
+
+            pct_trend = result.trend.pct_change()
+            trend_coeff10, trend_intercept10, trend_score10 = regress_input(pct_trend, N = 10)
+            trend_coeff30, trend_intercept30, trend_score30 = regress_input(pct_trend, N = 30)
+
+            # plt.plot(pct_trend)
+            # plt.title(ticker)
+            # plt.show()
             # print(result.trend)
             # print(result.seasonal)
             # print(result.resid)
             # print(result.observed)
-            result.plot()
-            plt.show()
-            
 
-            ## USED FOR TESTING ###
-            # fig, ax = plt.subplots(3, 1)
-            # ax[0].plot(fetched['Adj Close'], label = 'Price')
-            # ax[0].plot(price_change_lowpass.index[-N], fetched['Adj Close'].values[-N], 'o', fillstyle='none')
-            # ax[1].plot(price_change_lowpass, label = 'Lowpass 10 days', alpha = 0.4)
-            # ax[1].plot(price_change_lowpass.index[-N], price_change_lowpass.values[-N], 'o', fillstyle='none')
-            # ax[1].plot(fetched['Adj Close'].pct_change(), label = 'Returns', alpha = 0.4)
-            # ax[2].plot(price_change_std, label = 'Lowpass standard deviation', alpha = 0.4)
-            # ax[2].plot(price_change_std.index[-N], price_change_std.values[-N], 'o', fillstyle='none')
-            # plt.suptitle(ticker)
-            # ax[0].legend()
-            # ax[1].legend()
-            # ax[2].legend()
-            # plt.show()
-            self.intfc.add_row_moments(moments, ticker)
+            trend_coeff10_text = self.intfc.redgreencolor(trend_coeff10)
+            trend_intercept10_text = self.intfc.redgreencolor(trend_intercept10)
+            trend_score10_text = self.intfc.colorify(trend_score10, color = 'yellow', type = 'float')
+            trend_coeff30_text = self.intfc.redgreencolor(trend_coeff30)
+            trend_intercept30_text = self.intfc.redgreencolor(trend_intercept30)
+            trend_score30 = self.intfc.colorify(trend_score30, color = 'yellow', type = 'float')
+
+            trend_coeff = f"[{trend_coeff10_text}/{trend_coeff30_text}]"
+            trend_inter = f"[{trend_intercept10_text}/{trend_intercept30_text}]"
+            trend_score = f"[{trend_score10_text}/{trend_score30}]"
+
+            rows = [ticker,
+                    trend_coeff,
+                    trend_inter,
+                    trend_score,
+                    ]
+            self.intfc.add_row(rows)
         self.intfc.console_print()
 
 
