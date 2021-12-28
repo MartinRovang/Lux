@@ -33,7 +33,7 @@ class Portofolio:
         
         self.intfc.show_logo()
 
-    def add_ticker(self, ticker):
+    def add_ticker(self, ticker, amount = 1):
         if ticker not in self.prtf['tickers']:
             print(f"Adding {ticker} to portofolio")
             self.prtf['tickers'].append(ticker)
@@ -57,15 +57,42 @@ class Portofolio:
     def normalize_z(self, df):
         return (df - df.mean())/df.std()
     
+    def get_portofolio_stats(self):
+        # https://faculty.washington.edu/ezivot/econ424/portfolioTheoryMatrix.pdf
+        end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
+        MU = []
+        weights = np.ones(len(self.prtf['tickers']))
+        fetched_vix = fetch_info("^VIX", (end[0]-1,1,1), end)
+        for i, ticker in enumerate(self.prtf['tickers']):
+            fetched = fetch_info(ticker, (end[0]-1,1,1), end)
+            ser = fetched['Adj Close'].pct_change().dropna()
+            MU.append(np.mean(ser))
+            ser = ser.values[None, :]
+            if i < 1:
+                all_stock = ser
+            else:
+                all_stock = np.concatenate((all_stock, ser), axis = 0)
 
-    def get_stock_stats(self, N = 30):
+        SIGMA = np.cov(all_stock)
+        MU = np.array(MU)
+
+        vix_std = np.std(fetched_vix['Adj Close'].pct_change().dropna())
+        mean = weights@MU
+        std = np.sqrt(weights.T@SIGMA@weights)
+        print(f"Portofolio stats:")
+        print("Expected return day to day: ", round(mean*100,2),"%")
+        print("Expected devation day to day:", round(std*100,2),"%")
+        print("Beta[VIX]: ", round(std/vix_std, 2))
+        print("Sharpe ratio: ", round(mean/std, 2))
+
+
+
+    def get_stock_stat(self, tickers = ['AFK.OL'] , N = 30):
         end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
         col = ['Ticker', 'Trend[10/30]', 'Trendbias[10/30]', 'Confidence[10/30]']
         self.intfc.make_table(col, tl = 'Portofolio')
-        for ticker in self.prtf['tickers']:
+        for ticker in tickers:
             fetched = fetch_info(ticker, (end[0]-1,1,1), end)
-            
-
             ser = fetched['Adj Close'].dropna()
 
 
