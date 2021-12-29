@@ -14,6 +14,7 @@ from pmdarima import utils
 from rich.progress import track
 import scipy
 import pandas as pd
+import time
 
 
 def regress_input(y, N = 30):
@@ -69,13 +70,13 @@ class Portofolio:
             weights = np.linalg.inv(SIGMA)@weights/(weights.T@np.linalg.inv(SIGMA)@weights) # Eq. (1.12) minimum variance portfolio weights
 
 
-        benchmark_std = np.std(benchmark['Adj Close'].pct_change().dropna())
+        benchmark_std = np.std(benchmark)
         mean = weights@MU
         std = np.sqrt(weights.T@SIGMA@weights)
 
         beta_list = []
         for stock in portofolio:
-            cov = np.cov(stock, benchmark['Adj Close'].pct_change().dropna())[0][1]
+            cov = np.cov(stock, benchmark)[0][1]
             beta = cov/benchmark_std**2
             beta_list.append(beta)
 
@@ -99,19 +100,27 @@ class Portofolio:
         all_stocks_OSLO_symbols = all_stocks_OSLO['Symbol'].dropna()
 
         end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
-        benchmark = fetch_info("^GSPC", (end[0]-1,end[1],end[2]), end)[-365:]
-    
-        benchmarklength = len(benchmark['Adj Close'].pct_change().dropna())
+        benchmark = fetch_info("^GSPC", (end[0]-1,end[1],end[2]), end)
+        benchmark = benchmark['Adj Close'].pct_change().dropna()[-230:]
+        benchmarklength = len(benchmark)
         i = 0
         symbols_according_to_index = []
         symbols_not_loaded = []
         for stocksymbol in track(all_stocks_OSLO_symbols, description='Grabbing latest data from all stocks...'):
             fetched = fetch_info(stocksymbol, (end[0]-1,end[1],end[2]), end)
             if type(fetched) == bool:
-                print('Failed to load data for ' + stocksymbol)
-                symbols_not_loaded.append(stocksymbol)
-                continue
-            data = fetched['Adj Close'].pct_change().dropna()[-365:]
+                tries = 0
+                while type(fetched) == bool:
+                    # print('Failed to load data for ' + stocksymbol + ' Retrying...')
+                    time.sleep(5)
+                    fetched = fetch_info(stocksymbol, (end[0]-1,end[1],end[2]), end)
+                    tries += 1
+                    if tries >= 5:
+                        break
+                if tries >= 5:
+                    symbols_not_loaded.append(stocksymbol)
+                    continue
+            data = fetched['Adj Close'].pct_change().dropna()[-230:]
             datalength = len(data)
             if datalength == benchmarklength:
                 symbols_according_to_index.append(stocksymbol)
@@ -122,6 +131,7 @@ class Portofolio:
                     all_stock = np.concatenate((all_stock, data), axis = 0)
                 i += 1
             else:
+                #print(f'Failed to load data for TOO SHORT: {datalength} ticker: {stocksymbol}')
                 symbols_not_loaded.append(stocksymbol)
             # if i >= 7:
             #     break

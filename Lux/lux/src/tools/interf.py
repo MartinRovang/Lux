@@ -62,5 +62,10 @@ class Interface:
                                 #           @    %*       &  @                          
                                 #     @     @    %         @@                           
                               &&@&&&&&&      @%&%(&&    &@&  &@&
+
+                                  Made by Martin Soria Røvang
+                                 Mail: Gimpedillusion@gmail.com
+                                 Github: github.com/Martinrovang
+                                    Instagram: @martin.rovang
         [/bold cyan]"""
         self.console.print(logo)
