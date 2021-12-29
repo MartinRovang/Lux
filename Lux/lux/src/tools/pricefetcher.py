@@ -10,7 +10,9 @@ def fetch_info(ticker, start, end):
     start = dt.datetime(*start)
     end = dt.datetime(*end)
     #end = dt.datetime.now()
-    info_fetched = web.DataReader(ticker, 'yahoo', start, end)
-    return info_fetched
-
+    try:
+        info_fetched = web.DataReader(ticker, 'yahoo', start, end)
+        return info_fetched
+    except:
+        return False
 

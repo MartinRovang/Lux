@@ -11,9 +11,10 @@ from statsmodels.tsa.statespace.structural import UnobservedComponents
 import pmdarima as pm
 from pmdarima import arima
 from pmdarima import utils
-
+from rich.progress import track
 import scipy
 import pandas as pd
+
 
 def regress_input(y, N = 30):
     X = np.arange(0, N)[:, None]
@@ -57,33 +58,117 @@ class Portofolio:
     def normalize_z(self, df):
         return (df - df.mean())/df.std()
     
+
+    def portofolio_metrics(self, portofolio, weights, benchmark):
+        SIGMA = np.cov(portofolio)
+        MU = np.mean(portofolio, axis = 1)
+
+        benchmark_std = np.std(benchmark['Adj Close'].pct_change().dropna())
+        mean = weights@MU
+        std = np.sqrt(weights.T@SIGMA@weights)
+
+        beta_list = []
+        for stock in portofolio:
+            cov = np.cov(stock, benchmark['Adj Close'].pct_change().dropna())[0][1]
+            beta = cov/benchmark_std**2
+            beta_list.append(beta)
+
+        beta_list = np.array(beta_list)
+        beta_final = weights@beta_list
+
+        output = {'mean': round(mean,3), 'std': round(std,3), 'beta': round(beta_final,3), 'sharpe': round(mean/std,3)}
+        return output
+    
+
+    def make_optimized_portofolio(self, N = 100000, portofolio_size = 10):
+        #https://live.euronext.com/en/markets/oslo/equities/list
+ 
+        self.intfc.print_regular("----Making optimized portofolio----", color = 'cyan')
+        self.intfc.print_regular(f"Number of iterations: {N}", color = 'yellow')
+        self.intfc.print_regular(f"Portofolio Size: {portofolio_size}", color = 'yellow')
+        self.intfc.print_regular(f"Initiating...", color = 'cyan')
+
+        all_stocks_OSLO = pd.read_csv('lux/database/all_stocks_OSLO1.csv', encoding='latin', header=0, delimiter=';')
+        all_stocks_OSLO['Symbol'] = all_stocks_OSLO['Symbol'] + '.OL'
+        all_stocks_OSLO_symbols = all_stocks_OSLO['Symbol'].dropna()
+
+        end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
+        benchmark = fetch_info("^GSPC", (end[0]-1,1,1), end)
+    
+        benchmarklength = len(benchmark['Adj Close'].pct_change().dropna())
+        i = 0
+        symbols_according_to_index = []
+        symbols_not_loaded = []
+        for stocksymbol in track(all_stocks_OSLO_symbols, description='Grabbing latest data from all stocks...'):
+            fetched = fetch_info(stocksymbol, (end[0]-1,1,1), end)
+            if type(fetched) == bool:
+                symbols_not_loaded.append(stocksymbol)
+                continue
+            data = fetched['Adj Close'].pct_change().dropna()
+            if len(data) == benchmarklength:
+                symbols_according_to_index.append(stocksymbol)
+                data = data.values[None, :]
+                if i < 1:
+                    all_stock = data
+                else:
+                    all_stock = np.concatenate((all_stock, data), axis = 0)
+                i += 1
+            else:
+                symbols_not_loaded.append(stocksymbol)
+            # if i >= 7:
+            #     break
+        
+        symbols_according_to_index = np.array(symbols_according_to_index)
+        random_index_sample = np.arange(0, len(symbols_according_to_index))
+        best_sharpe = 0
+        for iteration in track(list(range(N)), description='Optimizing...'):
+            current_random_sample = np.random.choice(random_index_sample, size = portofolio_size, replace=False)
+            current_random_sample = np.array(current_random_sample)
+            current_portofolio = all_stock[current_random_sample]
+            current_portofolio_symbols = symbols_according_to_index[current_random_sample]
+
+            weights = np.ones(len(current_portofolio_symbols))/len(current_portofolio_symbols)
+            result = self.portofolio_metrics(current_portofolio, weights, benchmark)
+            if result['sharpe'] > best_sharpe:
+                best_sharpe = result['sharpe']
+                result_best = result
+                portofolio_list_best = current_portofolio_symbols
+        
+        self.intfc.print_regular("----BEST PORTOFOLIO----", color = 'cyan')
+        self.intfc.print_regular(f"{str(portofolio_list_best)}", color = 'red')
+        self.intfc.print_regular(f"Expected return: {result_best['mean']*100:.3f} %", color = 'yellow')
+        self.intfc.print_regular(f"Expected devation: {result_best['std']*100:.3f} %", color = 'yellow')
+        self.intfc.print_regular(f"Beta[S&P]: {result_best['beta']:.3f}", color = 'yellow')
+        self.intfc.print_regular(f"Sharpe: {result_best['sharpe']}", color = 'yellow')
+        self.intfc.print_regular("----Number of stocks looked at----", color = 'cyan')
+        self.intfc.print_regular(f"{str(len(all_stock))}", color = 'yellow')
+        self.intfc.print_regular("----Stocks not loaded due to being too young or error with loading data----", color = 'cyan')
+        self.intfc.print_regular(f"{str(symbols_not_loaded)}", color = 'red')
+
+
+    
     def get_portofolio_stats(self):
         # https://faculty.washington.edu/ezivot/econ424/portfolioTheoryMatrix.pdf
         end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
-        MU = []
-        weights = np.ones(len(self.prtf['tickers']))
-        fetched_vix = fetch_info("^VIX", (end[0]-1,1,1), end)
+        weights = np.ones(len(self.prtf['tickers']))/len(self.prtf['tickers'])
+        # ^VIX
+        benchmark = fetch_info("^GSPC", (end[0]-1,1,1), end)
         for i, ticker in enumerate(self.prtf['tickers']):
             fetched = fetch_info(ticker, (end[0]-1,1,1), end)
             ser = fetched['Adj Close'].pct_change().dropna()
-            MU.append(np.mean(ser))
+            # MU.append(np.mean(ser))
             ser = ser.values[None, :]
             if i < 1:
                 all_stock = ser
             else:
                 all_stock = np.concatenate((all_stock, ser), axis = 0)
 
-        SIGMA = np.cov(all_stock)
-        MU = np.array(MU)
-
-        vix_std = np.std(fetched_vix['Adj Close'].pct_change().dropna())
-        mean = weights@MU
-        std = np.sqrt(weights.T@SIGMA@weights)
+        result = self.portofolio_metrics(all_stock, weights, benchmark)
         print(f"Portofolio stats:")
-        print("Expected return day to day: ", round(mean*100,2),"%")
-        print("Expected devation day to day:", round(std*100,2),"%")
-        print("Beta[VIX]: ", round(std/vix_std, 2))
-        print("Sharpe ratio: ", round(mean/std, 2))
+        print("Expected return day to day: ", result['mean']*100,"%")
+        print("Expected devation day to day:", result['std']*100,"%")
+        print("Beta[S&P]: ", result['beta'])
+        print("Sharpe ratio: ", result['sharpe'])
 
 
 

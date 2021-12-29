@@ -31,6 +31,9 @@ class Interface:
 
     def console_print(self):
         self.console.print(self.table)
+    
+    def print_regular(self, text, color):
+        self.console.print(f"[bold {color}] {text} [/bold {color}]")
 
 
     def show_logo(self):
