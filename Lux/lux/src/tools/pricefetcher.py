@@ -16,6 +16,5 @@ def fetch_info(ticker, start, end):
         info_fetched = web.DataReader(ticker, 'yahoo', start_, end_)
         return info_fetched
     except:
-        print("Error fetching data for {}".format(ticker))
         return False
 

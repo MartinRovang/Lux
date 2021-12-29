@@ -59,9 +59,15 @@ class Portofolio:
         return (df - df.mean())/df.std()
     
 
-    def portofolio_metrics(self, portofolio, weights, benchmark):
+    def portofolio_metrics(self, portofolio, benchmark, weights = False):
+        # https://faculty.washington.edu/ezivot/econ424/portfolioTheoryMatrix.pdf
         SIGMA = np.cov(portofolio)
         MU = np.mean(portofolio, axis = 1)
+
+        if weights == False:
+            weights = np.ones(len(portofolio))
+            weights = np.linalg.inv(SIGMA)@weights/(weights.T@np.linalg.inv(SIGMA)@weights) # Eq. (1.12) minimum variance portfolio weights
+
 
         benchmark_std = np.std(benchmark['Adj Close'].pct_change().dropna())
         mean = weights@MU
@@ -76,7 +82,7 @@ class Portofolio:
         beta_list = np.array(beta_list)
         beta_final = weights@beta_list
 
-        output = {'mean': round(mean,3), 'std': round(std,3), 'beta': round(beta_final,3), 'sharpe': round(mean/std,3)}
+        output = {'mean': round(mean,3), 'std': round(std,3), 'beta': round(beta_final,3), 'sharpe': round(mean/std,3), 'weights': weights}
         return output
     
 
@@ -93,19 +99,21 @@ class Portofolio:
         all_stocks_OSLO_symbols = all_stocks_OSLO['Symbol'].dropna()
 
         end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
-        benchmark = fetch_info("^GSPC", (end[0]-1,1,1), end)
+        benchmark = fetch_info("^GSPC", (end[0]-1,end[1],end[2]), end)[-365:]
     
         benchmarklength = len(benchmark['Adj Close'].pct_change().dropna())
         i = 0
         symbols_according_to_index = []
         symbols_not_loaded = []
         for stocksymbol in track(all_stocks_OSLO_symbols, description='Grabbing latest data from all stocks...'):
-            fetched = fetch_info(stocksymbol, (end[0]-1,1,1), end)
+            fetched = fetch_info(stocksymbol, (end[0]-1,end[1],end[2]), end)
             if type(fetched) == bool:
+                print('Failed to load data for ' + stocksymbol)
                 symbols_not_loaded.append(stocksymbol)
                 continue
-            data = fetched['Adj Close'].pct_change().dropna()
-            if len(data) == benchmarklength:
+            data = fetched['Adj Close'].pct_change().dropna()[-365:]
+            datalength = len(data)
+            if datalength == benchmarklength:
                 symbols_according_to_index.append(stocksymbol)
                 data = data.values[None, :]
                 if i < 1:
@@ -127,15 +135,17 @@ class Portofolio:
             current_portofolio = all_stock.copy()[current_random_sample]
             current_portofolio_symbols = symbols_according_to_index.copy()[current_random_sample]
 
-            weights = np.ones(len(current_portofolio_symbols))/len(current_portofolio_symbols)
-            result = self.portofolio_metrics(current_portofolio, weights, benchmark)
+            result = self.portofolio_metrics(current_portofolio, benchmark)
             if result['sharpe'] > best_sharpe:
                 best_sharpe = result['sharpe']
                 result_best = result
                 portofolio_list_best = current_portofolio_symbols
         
-        self.intfc.print_regular("----BEST PORTOFOLIO----", color = 'cyan')
-        self.intfc.print_regular(f"{str(portofolio_list_best)}", color = 'red')
+        self.intfc.print_regular("----BEST PORTOFOLIO STOCKS----", color = 'cyan')
+        self.intfc.print_regular(f"{str(portofolio_list_best)}", color = 'green')
+        self.intfc.print_regular("----BEST WEIGHTS----", color = 'cyan')
+        self.intfc.print_regular(f"{result_best['weights']}", color = 'green')
+        self.intfc.print_regular("----ADDITIONAL METRICS----", color = 'cyan')
         self.intfc.print_regular(f"Expected return: {result_best['mean']*100:.3f} %", color = 'yellow')
         self.intfc.print_regular(f"Expected devation: {result_best['std']*100:.3f} %", color = 'yellow')
         self.intfc.print_regular(f"Beta[S&P]: {result_best['beta']:.3f}", color = 'yellow')
