@@ -80,7 +80,7 @@ class Portofolio:
         return output
     
 
-    def make_optimized_portofolio(self, N = 100000, portofolio_size = 10):
+    def make_optimized_portofolio(self, N = 100000, portofolio_size = 5):
         #https://live.euronext.com/en/markets/oslo/equities/list
  
         self.intfc.print_regular("----Making optimized portofolio----", color = 'cyan')
@@ -122,10 +122,10 @@ class Portofolio:
         random_index_sample = np.arange(0, len(symbols_according_to_index))
         best_sharpe = 0
         for iteration in track(list(range(N)), description='Optimizing...'):
-            current_random_sample = np.random.choice(random_index_sample, size = portofolio_size, replace=False)
+            current_random_sample = np.random.choice(random_index_sample.copy(), size = portofolio_size, replace=False)
             current_random_sample = np.array(current_random_sample)
-            current_portofolio = all_stock[current_random_sample]
-            current_portofolio_symbols = symbols_according_to_index[current_random_sample]
+            current_portofolio = all_stock.copy()[current_random_sample]
+            current_portofolio_symbols = symbols_according_to_index.copy()[current_random_sample]
 
             weights = np.ones(len(current_portofolio_symbols))/len(current_portofolio_symbols)
             result = self.portofolio_metrics(current_portofolio, weights, benchmark)
