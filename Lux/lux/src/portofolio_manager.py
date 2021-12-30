@@ -63,32 +63,155 @@ class Portofolio:
     def portofolio_metrics(self, portofolio, benchmark, weights = False):
         # https://faculty.washington.edu/ezivot/econ424/portfolioTheoryMatrix.pdf
         SIGMA = np.cov(portofolio)
-        MU = np.mean(portofolio, axis = 1)
+        MU = np.mean(portofolio, axis = 1)*self.timespan
+        MU = MU.reshape(len(MU), 1)
 
         if weights == False:
             weights = np.ones(len(portofolio))
-            weights = np.linalg.inv(SIGMA)@weights/(weights.T@np.linalg.inv(SIGMA)@weights) # Eq. (1.12) minimum variance portfolio weights
+            SIGMA_INV = np.linalg.inv(SIGMA)
+            weights = SIGMA_INV@weights/(weights.T@SIGMA_INV@weights) # Eq. (1.12) minimum variance portfolio weights
+            weights = weights.reshape(len(weights), 1)
 
 
         benchmark_std = np.std(benchmark)
-        mean = weights@MU
-        std = np.sqrt(weights.T@SIGMA@weights)
+        mean = weights.T@MU
+        mean = mean[0][0]
+
+        std = np.sqrt(weights.T@SIGMA@weights)*np.sqrt(self.timespan)
+        std = std[0][0]
 
         beta_list = []
         for stock in portofolio:
             cov = np.cov(stock, benchmark)[0][1]
             beta = cov/benchmark_std**2
             beta_list.append(beta)
+        beta_list = np.array(beta_list).reshape(len(beta_list), 1)
+        beta_final = weights.T@beta_list
+        beta_final = beta_final[0][0]
 
-        beta_list = np.array(beta_list)
-        beta_final = weights@beta_list
 
-        output = {'mean': round(mean,3), 'std': round(std,3), 'beta': round(beta_final,3), 'sharpe': round(mean/std,3), 'weights': weights}
+
+        output = {'mean': round(mean,5), 'std': round(std,5), 'beta': round(beta_final,5), 'sharpe': round(mean/std,5), 'weights': weights}
         return output
     
 
-    def make_optimized_portofolio(self, N = 100000, portofolio_size = 5):
+    def get_returns_from_prices(self, df):
+        if self.timespan != None:
+            return df['Adj Close'].pct_change().dropna(how="all")# + 1).cumprod()[-timespan:] - 1
+        else:
+            return df['Adj Close'].pct_change().dropna(how="all")# + 1).cumprod()-1#.cumsum()-1
+
+
+    def iter_portofolio(self, symbols_according_to_index, portofolio_size, all_stock, benchmark, N):
+        # https://quant.stackexchange.com/questions/53992/is-this-methodology-for-finding-the-minimum-variance-portfolio-with-no-short-sel
+        
+        symbols_according_to_index = np.array(symbols_according_to_index)
+        random_index_sample = np.arange(0, len(symbols_according_to_index))
+        best_sharpe = 0
+        worst_sharpe = 0
+        worst_result = []
+        portofolio_list_worst = []
+        if portofolio_size == None:
+            portofolio_size_iter = 20
+            for portsize in range(4, portofolio_size_iter+1):
+                for iteration in track(list(range(N)), description=f'Optimizing [p {portsize}]...'):
+                    current_random_sample = np.random.choice(random_index_sample.copy(), size = portsize, replace=False)
+                    current_random_sample = np.array(current_random_sample)
+                    current_portofolio = all_stock.copy()[current_random_sample]
+                    current_portofolio_symbols = symbols_according_to_index.copy()[current_random_sample]
+                    result = self.portofolio_metrics(current_portofolio, benchmark)
+                    if result['sharpe'] > best_sharpe:
+                        best_sharpe = result['sharpe']
+                        result_best = result
+                        portofolio_list_best = current_portofolio_symbols
+                    
+                    if result['sharpe'] < worst_sharpe:
+                        worst_sharpe = result['sharpe']
+                        worst_result = result
+                        portofolio_list_worst = current_portofolio_symbols
+        else:
+            for iteration in track(list(range(N)), description='Optimizing...'):
+                current_random_sample = np.random.choice(random_index_sample.copy(), size = portofolio_size, replace=False)
+                current_random_sample = np.array(current_random_sample)
+                current_portofolio = all_stock.copy()[current_random_sample]
+                current_portofolio_symbols = symbols_according_to_index.copy()[current_random_sample]
+
+                result = self.portofolio_metrics(current_portofolio, benchmark)
+                if result['sharpe'] > best_sharpe and ((result['weights']>0).sum() == len(result['weights'])):
+                    best_sharpe = result['sharpe']
+                    result_best = result
+                    portofolio_list_best = current_portofolio_symbols
+                
+                if (result['sharpe'] < worst_sharpe) and ((result['weights']>0).sum() == len(result['weights'])):
+                    worst_sharpe = result['sharpe']
+                    worst_result = result
+                    portofolio_list_worst = current_portofolio_symbols
+        
+        return result_best, portofolio_list_best, worst_result, portofolio_list_worst
+    
+
+    def print_optimized_port_results(self, portofolio_list_best, result_best, portofolio_list_worst, worst_result, all_stock, symbols_not_loaded):
+
+        self.intfc.print_regular(f"----BEST PORTOFOLIO STOCKS [N = {len((portofolio_list_best))}]----", color = 'green')
+        self.intfc.print_regular(f"{str(portofolio_list_best)}", color = 'cyan')
+        self.intfc.print_regular("----BEST WEIGHTS----", color = 'cyan')
+        self.intfc.print_regular(f"{result_best['weights']}", color = 'green')
+        self.intfc.print_regular("----ADDITIONAL METRICS----", color = 'cyan')
+        self.intfc.print_regular(f"Expected annual return: {result_best['mean']*100:.3f} %", color = 'yellow')
+        self.intfc.print_regular(f"Annual volatility: {result_best['std']*100:.3f} %", color = 'yellow')
+        self.intfc.print_regular(f"Beta[S&P]: {result_best['beta']:.3f}", color = 'yellow')
+        self.intfc.print_regular(f"Sharpe: {result_best['sharpe']}", color = 'yellow')
+
+        self.intfc.print_regular(f"----WORST PORTOFOLIO STOCKS [N = {len((portofolio_list_worst))}]----", color = 'red')
+        self.intfc.print_regular(f"{str(portofolio_list_worst)}", color = 'red')
+        self.intfc.print_regular("----BEST WEIGHTS----", color = 'cyan')
+        self.intfc.print_regular(f"{worst_result['weights']}", color = 'red')
+        self.intfc.print_regular("----ADDITIONAL METRICS----", color = 'cyan')
+        self.intfc.print_regular(f"Expected annual return: {worst_result['mean']*100:.3f} %", color = 'yellow')
+        self.intfc.print_regular(f"Annual volatility: {worst_result['std']*100:.3f} %", color = 'yellow')
+        self.intfc.print_regular(f"Beta[S&P]: {worst_result['beta']:.3f}", color = 'yellow')
+        self.intfc.print_regular(f"Sharpe: {worst_result['sharpe']}", color = 'yellow')
+
+        self.intfc.print_regular("----Additional stats----", color = 'cyan')
+        self.intfc.print_regular(f"N stocks: {str(len(all_stock))}", color = 'yellow')
+        self.intfc.print_regular(f"Time span: {self.timespan}", color = 'yellow')
+        self.intfc.print_regular("----Stocks not loaded due to being too young or error with loading data----", color = 'cyan')
+        self.intfc.print_regular(f"{str(symbols_not_loaded)}", color = 'ywllow')
+    
+
+
+    def grab_symbols_from_yahoo(self, all_stocks_OSLO_symbols, end, benchmark):
+        benchmarklength = len(benchmark)
+        i = 0
+        symbols_according_to_index = []
+        symbols_not_loaded = []
+        for stocksymbol in track(all_stocks_OSLO_symbols, description='Grabbing latest data from all stocks...'):
+            fetched = fetch_info(stocksymbol, (end[0]-1,end[1],end[2]), end)
+            if type(fetched) == bool:
+                    symbols_not_loaded.append(stocksymbol)
+                    continue
+            data = self.get_returns_from_prices(fetched)
+            datalength = len(data)
+            if datalength == benchmarklength:
+                symbols_according_to_index.append(stocksymbol)
+                data = data.values[None, :]
+                if i < 1:
+                    all_stock = data
+                else:
+                    all_stock = np.concatenate((all_stock, data), axis = 0)
+                i += 1
+            else:
+                # print(f'Failed to load data for TOO SHORT: {datalength} ticker: {stocksymbol}')
+                symbols_not_loaded.append(stocksymbol)
+            # if i >= 10:
+            #     break
+        return all_stock, symbols_according_to_index, symbols_not_loaded
+
+    
+
+    def make_optimized_portofolio(self, N = 100000, portofolio_size = 5, timespan = 252):
         #https://live.euronext.com/en/markets/oslo/equities/list
+        self.timespan = timespan
  
         self.intfc.print_regular("----Making optimized portofolio----", color = 'cyan')
         self.intfc.print_regular(f"Number of iterations: {N}", color = 'yellow')
@@ -101,69 +224,25 @@ class Portofolio:
 
         end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
         benchmark = fetch_info("^GSPC", (end[0]-1,end[1],end[2]), end)
-        benchmark = benchmark['Adj Close'].pct_change().dropna()[-230:]
-        benchmarklength = len(benchmark)
-        i = 0
-        symbols_according_to_index = []
-        symbols_not_loaded = []
-        for stocksymbol in track(all_stocks_OSLO_symbols, description='Grabbing latest data from all stocks...'):
-            fetched = fetch_info(stocksymbol, (end[0]-1,end[1],end[2]), end)
-            if type(fetched) == bool:
-                tries = 0
-                while type(fetched) == bool:
-                    # print('Failed to load data for ' + stocksymbol + ' Retrying...')
-                    time.sleep(5)
-                    fetched = fetch_info(stocksymbol, (end[0]-1,end[1],end[2]), end)
-                    tries += 1
-                    if tries >= 5:
-                        break
-                if tries >= 5:
-                    symbols_not_loaded.append(stocksymbol)
-                    continue
-            data = fetched['Adj Close'].pct_change().dropna()[-230:]
-            datalength = len(data)
-            if datalength == benchmarklength:
-                symbols_according_to_index.append(stocksymbol)
-                data = data.values[None, :]
-                if i < 1:
-                    all_stock = data
-                else:
-                    all_stock = np.concatenate((all_stock, data), axis = 0)
-                i += 1
-            else:
-                #print(f'Failed to load data for TOO SHORT: {datalength} ticker: {stocksymbol}')
-                symbols_not_loaded.append(stocksymbol)
-            # if i >= 7:
-            #     break
-        
-        symbols_according_to_index = np.array(symbols_according_to_index)
-        random_index_sample = np.arange(0, len(symbols_according_to_index))
-        best_sharpe = 0
-        for iteration in track(list(range(N)), description='Optimizing...'):
-            current_random_sample = np.random.choice(random_index_sample.copy(), size = portofolio_size, replace=False)
-            current_random_sample = np.array(current_random_sample)
-            current_portofolio = all_stock.copy()[current_random_sample]
-            current_portofolio_symbols = symbols_according_to_index.copy()[current_random_sample]
+        benchmark = self.get_returns_from_prices(benchmark)
 
-            result = self.portofolio_metrics(current_portofolio, benchmark)
-            if result['sharpe'] > best_sharpe:
-                best_sharpe = result['sharpe']
-                result_best = result
-                portofolio_list_best = current_portofolio_symbols
-        
-        self.intfc.print_regular("----BEST PORTOFOLIO STOCKS----", color = 'cyan')
-        self.intfc.print_regular(f"{str(portofolio_list_best)}", color = 'green')
-        self.intfc.print_regular("----BEST WEIGHTS----", color = 'cyan')
-        self.intfc.print_regular(f"{result_best['weights']}", color = 'green')
-        self.intfc.print_regular("----ADDITIONAL METRICS----", color = 'cyan')
-        self.intfc.print_regular(f"Expected return: {result_best['mean']*100:.3f} %", color = 'yellow')
-        self.intfc.print_regular(f"Expected devation: {result_best['std']*100:.3f} %", color = 'yellow')
-        self.intfc.print_regular(f"Beta[S&P]: {result_best['beta']:.3f}", color = 'yellow')
-        self.intfc.print_regular(f"Sharpe: {result_best['sharpe']}", color = 'yellow')
-        self.intfc.print_regular("----Number of stocks looked at----", color = 'cyan')
-        self.intfc.print_regular(f"{str(len(all_stock))}", color = 'yellow')
-        self.intfc.print_regular("----Stocks not loaded due to being too young or error with loading data----", color = 'cyan')
-        self.intfc.print_regular(f"{str(symbols_not_loaded)}", color = 'red')
+        all_stock, symbols_according_to_index, symbols_not_loaded = self.grab_symbols_from_yahoo(all_stocks_OSLO_symbols, end, benchmark)
+
+        result_best, portofolio_list_best, worst_result, portofolio_list_worst = self.iter_portofolio(symbols_according_to_index, portofolio_size, all_stock, benchmark, N)
+        self.print_optimized_port_results(portofolio_list_best, result_best, portofolio_list_worst, worst_result, all_stock, symbols_not_loaded)
+
+    
+    def simulate_portofolio(self, mean, variance, cash = 1000):
+        #monte carlo simulation of future returns of portofolio
+        #https://www.quantopian.com/posts/monte-carlo-simulation-of-portofolio-returns
+        days = 60
+        simulations = np.random.normal(mean/days, variance/np.sqrt(days), (10000, 60))
+        print(simulations.shape)
+        plt.plot(simulations)
+        plt.show()
+
+        pass
+
 
 
     
@@ -175,7 +254,8 @@ class Portofolio:
         benchmark = fetch_info("^GSPC", (end[0]-1,1,1), end)
         for i, ticker in enumerate(self.prtf['tickers']):
             fetched = fetch_info(ticker, (end[0]-1,1,1), end)
-            ser = fetched['Adj Close'].pct_change().dropna()
+            self.get_returns_from_prices(ser)
+            self.timespan = None
             # MU.append(np.mean(ser))
             ser = ser.values[None, :]
             if i < 1:
@@ -275,3 +355,6 @@ class Portofolio:
         self.intfc.console_print()
 
 
+
+
+# %%

@@ -5,6 +5,7 @@ import pandas as pd
 import pandas_datareader as web
 import datetime as dt
 import time
+from pandas_datareader._utils import RemoteDataError
 
 def fetch_info(ticker, start, end):
     

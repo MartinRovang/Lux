@@ -62,10 +62,10 @@ class Interface:
                                 #           @    %*       &  @                          
                                 #     @     @    %         @@                           
                               &&@&&&&&&      @%&%(&&    &@&  &@&
-
+        [/bold cyan][bold yellow]
                                   Made by Martin Soria Røvang
                                  Mail: Gimpedillusion@gmail.com
                                  Github: github.com/Martinrovang
                                     Instagram: @martin.rovang
-        [/bold cyan]"""
+        [/bold yellow]"""
         self.console.print(logo)
