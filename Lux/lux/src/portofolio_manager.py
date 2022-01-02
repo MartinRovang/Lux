@@ -228,6 +228,7 @@ class Portofolio:
                 symbols_not_loaded.append(stocksymbol)
                 continue
             data = self.get_returns_from_prices(fetched[-self.tradedays*self.years:])
+            data_prices = fetched['Adj Close'][-self.tradedays*self.years:]
             datalength = len(data)
             if datalength - benchmarklength == -1:
                 benchmarklength = datalength
@@ -236,8 +237,10 @@ class Portofolio:
                 # data = data.values[None, :]
                 if i < 1:
                     all_stock = data
+                    all_data_prices = data_prices
                 else:
                     all_stock = pd.concat([all_stock, data], axis = 1)
+                    all_data_prices = pd.concat([all_data_prices, data_prices], axis = 1)
                 i += 1
             else:
                 # print(f'Failed to load data for TOO SHORT: {datalength} ticker: {stocksymbol}')
@@ -246,8 +249,9 @@ class Portofolio:
         all_stock = all_stock.dropna()
         self.tradedays = len(all_stock)
         all_stock = pd.DataFrame(all_stock.values, index = all_stock.index, columns = symbols_according_to_index)
+        all_data_prices = pd.DataFrame(all_data_prices.values, index = all_data_prices.index, columns = symbols_according_to_index)
 
-        return all_stock, symbols_not_loaded
+        return all_stock, symbols_not_loaded, all_data_prices
 
 
 
@@ -302,7 +306,7 @@ class Portofolio:
 
 
     
-    def get_portofolio_stats(self, years: int = 1, weights: list = [1/3, 1/3, 1/3]) -> None:
+    def get_portofolio_stats(self, years: int = 1, weights: list = [1/3, 1/3, 1/3], init_cash = 10000) -> None:
         # https://faculty.washington.edu/ezivot/econ424/portfolioTheoryMatrix.pdf
         """
 
@@ -322,14 +326,75 @@ class Portofolio:
         benchmark = self.get_returns_from_prices(benchmark)
         self.tradedays = len(benchmark)
         all_stocks_OSLO_symbols = [stock for stock in self.prtf['tickers']]
-        all_stock, symbols_not_loaded = self.grab_symbols_from_yahoo(all_stocks_OSLO_symbols, end, benchmark)
+        all_stock, symbols_not_loaded, all_data_prices = self.grab_symbols_from_yahoo(all_stocks_OSLO_symbols, end, benchmark)
         output = self.portofolio_metrics(all_stock, benchmark, weights = weights, optimweights = False)
+
+
+        print(all_data_prices)
+
+
+        # from pypfopt import EfficientFrontier
+        # from pypfopt import risk_models
+        # from pypfopt import expected_returns
+        # mu = expected_returns.mean_historical_return(all_data_prices, compounding= False, frequency = 250)
+        # S = risk_models.sample_cov(all_data_prices)
+
+        # print(mu)
+        # print(S)
+
+        # # Optimize for maximal Sharpe ratio
+        # ef = EfficientFrontier(mu, S, weight_bounds=(0.05,1))
+        # raw_weights = ef.max_sharpe()
+        # print(raw_weights)
+        # cleaned_weights = ef.clean_weights()
+        # # ef.save_weights_to_file("weights.csv")  # saves to file
+        # print(cleaned_weights)
+        # ef.portfolio_performance(verbose=True)
+
 
         self.intfc.print_regular(f"----PORTOFOLIO STATS [N = {all_stock.shape[1]}]----", color = 'cyan')
         self.intfc.print_regular(f"Annual expected return: {round(output['mean']*100,2)}%", color = 'yellow')
         self.intfc.print_regular(f"Annual devation: {round(output['std']*100,2)}%", color = 'yellow')
         self.intfc.print_regular(f"Beta[S&P]: {output['beta']}", color = 'yellow')
         self.intfc.print_regular(f"Sharpe ratio: {output['sharpe']}", color = 'yellow')
+
+
+        window_period = 14
+        num_sd = 2
+        weighted_stocks = weights*init_cash
+        portofolio_value = (all_stock + 1).cumprod(axis = 0)
+        portofolio_value = (portofolio_value*weighted_stocks).sum(axis = 1)
+        mean_rolling = portofolio_value.rolling(window = window_period).mean().dropna()
+        std_rolling = portofolio_value.rolling(window = window_period).std().dropna()
+
+
+
+        model = pm.auto_arima(mean_rolling, error_action='ignore', trace=True,
+                  suppress_warnings=False, seasonal=False, n_fits = 1000)
+        forecasts, conf = model.predict(30, return_conf_int=True)  # predict N steps into the future
+
+        date_future = pd.date_range(start=portofolio_value.index[-1], periods=30, freq='D')
+        plt.plot(date_future, forecasts, '--', c='orange', linewidth = 1, label = f'Projected {model}', alpha = 0.6)
+        plt.fill_between(date_future, forecasts, conf[:, 1], conf[:, 0], color='orange', alpha = 0.3, label = f'95% confidence interval')
+        plt.fill_between(date_future, forecasts, conf[:, 0], conf[:, 1], color='orange', alpha = 0.3)
+
+
+        plt.plot(portofolio_value.index, portofolio_value.values, '-', color = 'blue', label = 'Sharpe ratio', linewidth = 1 ,alpha = 0.6)
+        plt.plot(mean_rolling.index, mean_rolling.values, '--', color = 'black', label = f'Mean {window_period} days', linewidth = 1 ,alpha = 0.6)
+        plt.plot(mean_rolling.index, mean_rolling.values +num_sd*std_rolling.values, '-', color = 'black', linewidth = 1)
+        plt.plot(mean_rolling.index, mean_rolling.values - num_sd*std_rolling.values, '-', color = 'black', linewidth = 1)
+        plt.fill_between(mean_rolling.index, mean_rolling.values - num_sd*std_rolling.values, mean_rolling.values + num_sd*std_rolling.values, color='black', alpha=0.3, label = f'{2}$\sigma$')
+        plt.plot(portofolio_value.index[-1], portofolio_value.values[-1], 'o', color = 'green', label = 'Latest trading day', fillstyle = 'none')
+        plt.title('Portofolio historical value')
+        plt.ylabel('Portofolio value')
+        plt.xlabel('Date')
+        plt.legend()
+        plt.tight_layout()
+        plt.show()
+
+        exit()
+
+
 
         sharpehistory = []
         window_period = 60
@@ -359,8 +424,8 @@ class Portofolio:
 
         plt.plot(tradedaycounter, sharpehistory, '-', color = 'blue', label = 'Sharpe ratio', linewidth = 1 ,alpha = 0.6)
         plt.plot(tradedaycounter, np.repeat(1, len(tradedaycounter)), '--', color = 'red', label = 'Bad line')
-        plt.plot(tradedaycounter, sharpehistory_mean, '--', color = 'black', label = 'Mean 60 day SR')
-        plt.plot(tradedaycounter, sharpehistory_mean + ((window_period//3)/10)*sharpehistory_std, '-', color = 'black', linewidth = 1)
+        plt.plot(sharpehistory_mean, '--', color = 'black', label = 'Mean 60 day SR')
+        plt.plot(sharpehistory_mean + ((window_period//3)/10)*sharpehistory_std, '-', color = 'black', linewidth = 1)
         plt.plot(tradedaycounter, sharpehistory_mean - ((window_period//3)/10)*sharpehistory_std, '-', color = 'black', linewidth = 1)
         plt.fill_between(tradedaycounter, sharpehistory_mean - ((window_period//3)/10)*sharpehistory_std, sharpehistory_mean + ((window_period//3)/10)*sharpehistory_std, color='black', alpha=0.3, label = 'Standard deviation')
         # plt.plot(tradedaycounter[-1], sharpehistory[-1], 'o', color = 'green', label = 'Latest trading day', fillstyle = 'none')
@@ -422,35 +487,6 @@ class Portofolio:
             fetched = fetch_info(ticker, (end[0]-self.years,end[1],end[2]), end)
             ser = fetched['Adj Close'].dropna()
 
-
-            # model = UnobservedComponents(ser.values,
-            #                         level='fixed intercept',
-            #                         seasonal=10,
-            #                         freq_seasonal=[{'period': 100,
-            #                                         'harmonics': 2}])
-            # res_f = model.fit(disp=False)
-            # print(res_f.summary())
-            # res_f.plot_components()
-            # plt.show()
-
-
-            # model = pm.auto_arima(ser, error_action='ignore', trace=True,
-            #           suppress_warnings=True, seasonal=True, m=13)
-            # forecasts, conf = model.predict(30, return_conf_int=True)  # predict N steps into the future
-            # trainlen = len(ser)
-            # predlen = 30
-            # x_axis = np.arange(trainlen + predlen)
-            # plt.plot(x_axis[:len(ser)], ser, c='blue')
-            # plt.plot(x_axis[-30:], forecasts, c='green')
-            # plt.fill_between(x_axis[-30:], conf[:, 0], conf[:, 1], color='orange', alpha=0.3)
-            # plt.show()
-
-            # figure_kwargs = {'figsize': (6, 6)}
-            # decomposed = arima.decompose(ser.values, 'additive', m=60)
-            # axes = utils.decomposed_plot(decomposed, figure_kwargs=figure_kwargs,
-            #                  show=False)
-            # axes[0].set_title(ticker)
-            # plt.show()
 
             #ser = self.normalize_max(ser).dropna()
             error = 99999999
