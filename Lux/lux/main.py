@@ -1,20 +1,36 @@
 from lux import portofolio_manager
+import numpy as np
+from lux import stocksaver
+# stocksaver.grab_symbols_from_yahoo()
+stocksaver.main()
+
+
 
 p = portofolio_manager.Portofolio()
-# p.add_ticker('AFK.OL')
-# p.add_ticker('SALM.OL')
+p.add_ticker('MORG.OL')
+p.add_ticker('SDRL.OL')
+p.add_ticker('JAREN.OL')
+p.add_ticker('SOON.OL')
+p.add_ticker('POL.OL')
+# p.add_ticker('ALNG.OL')
+# p.add_ticker('ADS.OL')
+# p.add_ticker('AEGA.OL')
+# p.add_ticker('AKBM.OL')
+# p.add_ticker('ARR.OL')
+# p.add_ticker('ASTK.OL')
 # p.add_ticker('YAR.OL')
-# p.add_ticker('EQNR.OL')
-# p.add_ticker('TEL.OL')
-# p.add_ticker('MPCC.OL')
-# p.add_ticker('MOWI.OL')
+# p.add_ticker('AKVA.OL')
+
 # p.get_stock_stat()
-# p.get_portofolio_stats()
-p.make_optimized_portofolio(N = 100000, portofolio_size = 5, timespan = 230)
+p.get_portofolio_stats(weights =  [0.29455796 ,0.00315625, 0.23164206, 0.37827824, 0.09236549])
+# p.get_portofolio_stats(years = 1, weights = [0.0174019, 0.34753948, 0.23776549, 0.07112895, 0.32616419])
+# weights = np.ones(len(p.prtf['tickers']))/len(p.prtf['tickers'])
+# p.get_portofolio_stats(weights = weights)
+# p.make_optimized_portofolio(N = 100000, portofolio_size = 10, years = 1)
 
 
 
-###
+##
 # import pandas as pd
 # from pypfopt import EfficientFrontier
 # from pypfopt import risk_models
@@ -52,10 +68,10 @@ p.make_optimized_portofolio(N = 100000, portofolio_size = 5, timespan = 230)
 # S = risk_models.sample_cov(outt)
 
 # print(mu)
-# # print(S)
+# print(S)
 
 # # Optimize for maximal Sharpe ratio
-# ef = EfficientFrontier(mu, S)
+# ef = EfficientFrontier(mu, S, weight_bounds=(0.05,1))
 # raw_weights = ef.max_sharpe()
 # print(raw_weights)
 # cleaned_weights = ef.clean_weights()
@@ -66,10 +82,10 @@ p.make_optimized_portofolio(N = 100000, portofolio_size = 5, timespan = 230)
 
 #%%
 
-def make(weight, price):
-    out = (weight*100000)/price
-    return out
+# def make(weight, price):
+#     out = (weight*100000)/price
+#     return out
 
 
-print(make(0.32616419, 444))
+# print(make(0.07453796, 1.488))
 # %%

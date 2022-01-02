@@ -16,6 +16,6 @@ def fetch_info(ticker, start, end):
     try:
         info_fetched = web.DataReader(ticker, 'yahoo', start_, end_)
         return info_fetched
-    except:
+    except KeyError:
         return False
 
