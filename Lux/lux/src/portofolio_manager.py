@@ -15,6 +15,9 @@ from rich.progress import track
 import scipy
 import pandas as pd
 import warnings
+from pypfopt import EfficientFrontier
+from pypfopt import risk_models
+from pypfopt import expected_returns
 
 def regress_input(y, N = 30):
     """[summary]
@@ -305,8 +308,34 @@ class Portofolio:
         plt.show()
 
 
+    def optimize_portofolio_already_given(self, weight_bounds=(0.05,1)):
+
+
+        end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
+        self.years = 1
+        self.tradedays = 250
+        benchmark = fetch_info("^GSPC", (end[0]-5,end[1],end[2]), end)[-self.tradedays*self.years:]
+        benchmark = self.get_returns_from_prices(benchmark)
+        self.tradedays = len(benchmark)
+        all_stocks_OSLO_symbols = [stock for stock in self.prtf['tickers']]
+        all_stock, symbols_not_loaded, all_data_prices = self.grab_symbols_from_yahoo(all_stocks_OSLO_symbols, end, benchmark)
+
+
+
+        mu = expected_returns.mean_historical_return(all_data_prices, compounding= False)
+        S = risk_models.sample_cov(all_data_prices)
+
+        # Optimize for maximal Sharpe ratio
+        ef = EfficientFrontier(mu, S, weight_bounds= weight_bounds)
+        raw_weights = ef.max_sharpe()
+        cleaned_weights = ef.clean_weights()
+        # ef.save_weights_to_file("weights.csv")  # saves to file
+        print(cleaned_weights)
+        ef.portfolio_performance(verbose=True)
+
+
     
-    def get_portofolio_stats(self, years: int = 1, weights: list = [1/3, 1/3, 1/3], init_cash = 10000) -> None:
+    def get_portofolio_stats(self, buy_date, buy_point, years: int = 1, weights: list = [1/3, 1/3, 1/3], init_cash = 10000) -> None:
         # https://faculty.washington.edu/ezivot/econ424/portfolioTheoryMatrix.pdf
         """
 
@@ -317,7 +346,7 @@ class Portofolio:
         Returns:
             [type]: [description]
         """
-        
+        buy_date = dt.datetime(*buy_date)
         weights = np.array(weights)
         end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
         self.years = years
@@ -329,68 +358,52 @@ class Portofolio:
         all_stock, symbols_not_loaded, all_data_prices = self.grab_symbols_from_yahoo(all_stocks_OSLO_symbols, end, benchmark)
         output = self.portofolio_metrics(all_stock, benchmark, weights = weights, optimweights = False)
 
-
-        print(all_data_prices)
-
-
-        # from pypfopt import EfficientFrontier
-        # from pypfopt import risk_models
-        # from pypfopt import expected_returns
-        # mu = expected_returns.mean_historical_return(all_data_prices, compounding= False, frequency = 250)
-        # S = risk_models.sample_cov(all_data_prices)
-
-        # print(mu)
-        # print(S)
-
-        # # Optimize for maximal Sharpe ratio
-        # ef = EfficientFrontier(mu, S, weight_bounds=(0.05,1))
-        # raw_weights = ef.max_sharpe()
-        # print(raw_weights)
-        # cleaned_weights = ef.clean_weights()
-        # # ef.save_weights_to_file("weights.csv")  # saves to file
-        # print(cleaned_weights)
-        # ef.portfolio_performance(verbose=True)
-
-
-        self.intfc.print_regular(f"----PORTOFOLIO STATS [N = {all_stock.shape[1]}]----", color = 'cyan')
-        self.intfc.print_regular(f"Annual expected return: {round(output['mean']*100,2)}%", color = 'yellow')
-        self.intfc.print_regular(f"Annual devation: {round(output['std']*100,2)}%", color = 'yellow')
-        self.intfc.print_regular(f"Beta[S&P]: {output['beta']}", color = 'yellow')
-        self.intfc.print_regular(f"Sharpe ratio: {output['sharpe']}", color = 'yellow')
+        # self.intfc.print_regular(f"----PORTOFOLIO STATS [N = {all_stock.shape[1]}]----", color = 'cyan')
+        # self.intfc.print_regular(f"Annual expected return: {round(output['mean']*100,2)}%", color = 'yellow')
+        # self.intfc.print_regular(f"Annual devation: {round(output['std']*100,2)}%", color = 'yellow')
+        # self.intfc.print_regular(f"Beta[S&P]: {output['beta']}", color = 'yellow')
+        # self.intfc.print_regular(f"Sharpe ratio: {output['sharpe']}", color = 'yellow')
 
 
         window_period = 14
         num_sd = 2
-        weighted_stocks = weights*init_cash
+        weighted_stocks = weights
         portofolio_value = (all_stock + 1).cumprod(axis = 0)
         portofolio_value = (portofolio_value*weighted_stocks).sum(axis = 1)
         mean_rolling = portofolio_value.rolling(window = window_period).mean().dropna()
         std_rolling = portofolio_value.rolling(window = window_period).std().dropna()
 
 
+        print(output)
+        print('Last point:', portofolio_value.values[-1])
+
 
         model = pm.auto_arima(mean_rolling, error_action='ignore', trace=True,
-                  suppress_warnings=False, seasonal=False, n_fits = 1000)
+                  suppress_warnings=False, seasonal=False, n_fits = 1000 , max_p=100, max_d=2, max_q=100)
         forecasts, conf = model.predict(30, return_conf_int=True)  # predict N steps into the future
 
+
         date_future = pd.date_range(start=portofolio_value.index[-1], periods=30, freq='D')
-        plt.plot(date_future, forecasts, '--', c='orange', linewidth = 1, label = f'Projected {model}', alpha = 0.6)
-        plt.fill_between(date_future, forecasts, conf[:, 1], conf[:, 0], color='orange', alpha = 0.3, label = f'95% confidence interval')
-        plt.fill_between(date_future, forecasts, conf[:, 0], conf[:, 1], color='orange', alpha = 0.3)
+        plt.plot(date_future, forecasts, '--', c='black', linewidth = 1, label = f'Projected {str(model)[:13]}', alpha = 0.4)
+        plt.fill_between(date_future, conf[:, 1], conf[:, 0], color='black', alpha = 0.3)
 
-
-        plt.plot(portofolio_value.index, portofolio_value.values, '-', color = 'blue', label = 'Sharpe ratio', linewidth = 1 ,alpha = 0.6)
-        plt.plot(mean_rolling.index, mean_rolling.values, '--', color = 'black', label = f'Mean {window_period} days', linewidth = 1 ,alpha = 0.6)
+        plt.plot(portofolio_value.index, portofolio_value.values, '-', color = 'blue', label = 'PF value', linewidth = 1 ,alpha = 1)
+        plt.plot(mean_rolling.index, mean_rolling.values, '-', color = 'black', label = f'Mean {window_period} days', linewidth = 1 ,alpha = 0.7)
         plt.plot(mean_rolling.index, mean_rolling.values +num_sd*std_rolling.values, '-', color = 'black', linewidth = 1)
         plt.plot(mean_rolling.index, mean_rolling.values - num_sd*std_rolling.values, '-', color = 'black', linewidth = 1)
-        plt.fill_between(mean_rolling.index, mean_rolling.values - num_sd*std_rolling.values, mean_rolling.values + num_sd*std_rolling.values, color='black', alpha=0.3, label = f'{2}$\sigma$')
-        plt.plot(portofolio_value.index[-1], portofolio_value.values[-1], 'o', color = 'green', label = 'Latest trading day', fillstyle = 'none')
-        plt.title('Portofolio historical value')
+        plt.plot(buy_date, buy_point, 'o', color = 'green', label = 'Buy date', fillstyle = 'none')
+        plt.plot(portofolio_value.index, np.repeat(buy_point, len(portofolio_value.index)), '-', color = 'green', label = 'profit line', alpha = 0.3)
+        plt.plot(date_future, np.repeat(buy_point, len(date_future)), '-', color = 'green', alpha = 0.3)
+
+        plt.fill_between(mean_rolling.index, mean_rolling.values - num_sd*std_rolling.values, mean_rolling.values + num_sd*std_rolling.values, color='black', alpha=0.4, label = f'{2}$\sigma$')
+        plt.plot(portofolio_value.index[-1], portofolio_value.values[-1], '^', color = 'purple', label = 'Latest trading day', fillstyle = 'none')
+        plt.title(f'Portofolio historical value [SR {round(output["sharpe"],2)}]')
         plt.ylabel('Portofolio value')
         plt.xlabel('Date')
-        plt.legend()
+        plt.legend(loc = 'upper left')
         plt.tight_layout()
-        plt.show()
+        plt.savefig(f'lux/database/portofolio_snapshots/jinx/{dt.datetime.now().strftime("%Y-%m-%d")}.pdf')
+        plt.close()
 
         exit()
 

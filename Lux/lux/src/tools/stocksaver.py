@@ -94,7 +94,60 @@ def portofolio_metrics(portofolio, benchmark, optimweights = True):
     return output
 
 
-def main():
+
+
+def iter_portofolio(portofolio_size, all_stock, benchmark, N = 100000):
+        """[summary]
+
+        Args:
+            portofolio_size ([type]): [description]
+            all_stock ([type]): [description]
+            benchmark ([type]): [description]
+            N ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
+        # https://quant.stackexchange.com/questions/53992/is-this-methodology-for-finding-the-minimum-variance-portfolio-with-no-short-sel
+        
+        best_sharpe = 0
+        worst_sharpe = 1
+        worst_result = []
+        if portofolio_size == None:
+            portofolio_size_iter = 20
+            for portsize in range(4, portofolio_size_iter+1):
+                for iteration in track(list(range(N)), description=f'Optimizing [p {portsize}]...'):
+                    current_portofolio = all_stock.sample(n = portofolio_size, replace = False, axis = 1)
+                    result = portofolio_metrics(current_portofolio, benchmark)
+                    result['portofolio'] = current_portofolio
+                    if result['sharpe'] > best_sharpe and ((result['weights']>0).sum() == len(result['weights'])):
+                        best_sharpe = result['sharpe']
+                        result_best = result
+                        
+                    if (result['sharpe'] < worst_sharpe) and ((result['weights']>0).sum() == len(result['weights'])):
+                        worst_sharpe = result['sharpe']
+                        worst_result = result
+        else:
+            for iteration in track(list(range(N)), description='Optimizing...'):
+                current_portofolio = all_stock.sample(n = portofolio_size, replace = False, axis = 1)
+
+                result = portofolio_metrics(current_portofolio, benchmark)
+                
+                result['portofolio'] = current_portofolio
+                if result['sharpe'] > best_sharpe and ((result['weights']>0).sum() == len(result['weights'])):
+                    best_sharpe = result['sharpe']
+                    result_best = result
+                    
+                if (result['sharpe'] < worst_sharpe) and ((result['weights']>0).sum() == len(result['weights'])):
+                    worst_sharpe = result['sharpe']
+                    worst_result = result
+        
+        return result_best, worst_result
+
+
+
+
+def main(portofolio_size = 10):
     # grab_symbols_from_yahoo()
     data = pickle.load(open('lux/database/stockprices/all_stock_vals(2022, 1, 1).pkl', 'rb'))
     data_benchmark = data["^GSPC"]
@@ -104,12 +157,26 @@ def main():
     leng = data_all.shape[0]
     data_all = data_all.dropna(axis = 1, thresh= leng - 10)
     all_port = {}
-    for iteration in track(range(0, 10000)):
-        current_portofolio = data_all.sample(n = 5, replace = False, axis = 1)
-        out = portofolio_metrics(current_portofolio, data_benchmark)
-        out['portofolio'] = current_portofolio.columns
-        all_port[iteration] = out
+
+    result_best, worst_result = iter_portofolio(portofolio_size, data_all, data_benchmark)
+
+    print(f"----BEST PORTOFOLIO STOCKS [N = {len(result_best['portofolio'].columns.values)}]----")
+    print(f"{result_best['portofolio'].columns.values}")
+    print("----BEST WEIGHTS----")
+    print(f"{[round(weight, 4) for weight in result_best['weights']]}")
+    print("----ADDITIONAL METRICS----")
+    print(f"Expected annual return: {result_best['mean']*100:.3f} %")
+    print(f"Annual volatility: {result_best['std']*100:.3f} %")
+    print(f"Beta[S&P]: {result_best['beta']:.3f}")
+    print(f"Sharpe: {result_best['sharpe']}")
+
+    # for iteration in track(range(0, 10000)):
+    #     current_portofolio = data_all.sample(n = N, replace = False, axis = 1)
+    #     out = portofolio_metrics(current_portofolio, data_benchmark)
+    #     out['portofolio'] = current_portofolio.columns
+    #     all_port[iteration] = out
     
-    all_port = pd.DataFrame(all_port)
-    all_port.T["sharpe"].plot(linewidth = 0, marker = '.')
-    plt.show()
+    # all_port = pd.DataFrame(all_port)
+    # all_port.T["sharpe"].plot(linewidth = 0, marker = '.')
+    # print()
+    # plt.show()

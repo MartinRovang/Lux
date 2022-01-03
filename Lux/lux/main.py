@@ -15,19 +15,42 @@ p = portofolio_manager.Portofolio()
 # p.add_ticker('POL.OL')
 
 # Vi
-p.add_ticker('ALNG.OL')
-p.add_ticker('SOON.OL')
-p.add_ticker('JAREN.OL')
-p.add_ticker('KOG.OL')
-p.add_ticker('MORG.OL')
+# p.add_ticker('ALNG.OL')
+# p.add_ticker('SOON.OL')
+# p.add_ticker('JAREN.OL')
+# p.add_ticker('KOG.OL')
+# p.add_ticker('MORG.OL')
 
 # p.get_stock_stat()
 # Samira
 # p.get_portofolio_stats(weights =  [0.29455796 ,0.00315625, 0.23164206, 0.37827824, 0.09236549])
 # p.get_portofolio_stats(weights = [0.28197, 0.05, 0.08898, 0.43498, 0.14406])
 # Vi
-p.get_portofolio_stats(years = 1, weights = [0.0174019, 0.34753948, 0.23776549, 0.07112895, 0.32616419])
+# p.get_portofolio_stats(years = 1, weights = [0.0174019, 0.34753948, 0.23776549, 0.07112895, 0.32616419])
+
+
+# 10 stocks port test
+p.add_ticker('SOON.OL')
+p.add_ticker('JAREN.OL')
+p.add_ticker('SNI.OL')
+p.add_ticker('MOWI.OL')
+p.add_ticker('POL.OL')
+p.add_ticker('MORG.OL')
+p.add_ticker('ODFB.OL')
+p.add_ticker('NSKOG.OL')
+p.add_ticker('BELCO.OL')
+
+# OrderedDict([('SOON.OL', 0.33494), ('JAREN.OL', 0.06668), ('SNI.OL', 0.05), ('MOWI.OL', 0.05), ('POL.OL', 0.14806), ('MORG.OL', 0.20032), ('ODFB.OL', 0.05), ('NSKOG.OL', 0.05), ('BELCO.OL', 0.05)])
+# Expected annual return: 44.7%
+# Annual volatility: 9.7%
+# Sharpe Ratio: 4.39
+
+# p.get_portofolio_stats(years = 1, weights = [0.3108, 0.1651, 0.0362, 0.0742, 0.0854, 0.0734, 0.2055, 0.0412, 0.0068, 0.0015])
+# p.optimize_portofolio_already_given(weight_bounds=(0.05,1))
+p.get_portofolio_stats(buy_date = (2022, 1 , 3), buy_point = 1.559 , years = 1, weights = [0.33494, 0.06668, 0.05, 0.05, 0.14806, 0.20032, 0.05, 0.05, 0.05])
 # p.get_portofolio_stats(weights = np.ones(len(p.prtf['tickers']))/len(p.prtf['tickers']))
+
+
 # p.make_optimized_portofolio(N = 100000, portofolio_size = 10, years = 1)
 
 
