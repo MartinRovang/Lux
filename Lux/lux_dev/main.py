@@ -7,6 +7,7 @@ from lux_dev import stocksaver
 
 
 p = portofolio_manager.Portofolio()
+# p.look_for_betterment(weights = [0.33494, 0.06668, 0.05, 0.05, 0.14806, 0.20032, 0.05, 0.05, 0.05])
 # Samira
 # p.add_ticker('MORG.OL')
 # p.add_ticker('SDRL.OL')

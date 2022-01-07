@@ -63,6 +63,11 @@ class Portofolio:
             self.prtf['tickers'].remove(ticker)
             self.write_data()
     
+    def sell_ticker(self, ticker):
+        end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
+
+        self.remove_ticker(ticker)
+    
     def load_data(self):
         self.prtf = pickle.load(open('lux_dev/database/portofolio.pkl', 'rb'))
     
@@ -150,7 +155,7 @@ class Portofolio:
                     if result['sharpe'] > best_sharpe and ((result['weights']>0).sum() == len(result['weights'])):
                         best_sharpe = result['sharpe']
                         result_best = result
-                        
+
                     if (result['sharpe'] < worst_sharpe) and ((result['weights']>0).sum() == len(result['weights'])):
                         worst_sharpe = result['sharpe']
                         worst_result = result
@@ -225,6 +230,8 @@ class Portofolio:
         i = 0
         symbols_according_to_index = []
         symbols_not_loaded = []
+        all_stock = pd.DataFrame()
+        all_data_prices = pd.DataFrame()
         for stocksymbol in track(all_stocks_OSLO_symbols, description='Grabbing latest data from all stocks...'):
             fetched = fetch_info(stocksymbol, (end[0]-self.years,end[1],end[2]), end)
             if type(fetched) == bool:
@@ -248,7 +255,7 @@ class Portofolio:
             else:
                 # print(f'Failed to load data for TOO SHORT: {datalength} ticker: {stocksymbol}')
                 symbols_not_loaded.append(stocksymbol)
-
+        
         all_stock = all_stock.dropna()
         self.tradedays = len(all_stock)
         all_stock = pd.DataFrame(all_stock.values, index = all_stock.index, columns = symbols_according_to_index)
@@ -308,30 +315,55 @@ class Portofolio:
         plt.show()
 
 
-    def optimize_portofolio_already_given(self, weight_bounds=(0.05,1)):
+    def look_for_betterment(self, weights, N_change = 2, N = 100000):
 
 
         end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
         self.years = 1
         self.tradedays = 250
+        weights = np.array(weights)
         benchmark = fetch_info("^GSPC", (end[0]-5,end[1],end[2]), end)[-self.tradedays*self.years:]
         benchmark = self.get_returns_from_prices(benchmark)
         self.tradedays = len(benchmark)
-        all_stocks_OSLO_symbols = [stock for stock in self.prtf['tickers']]
-        all_stock, symbols_not_loaded, all_data_prices = self.grab_symbols_from_yahoo(all_stocks_OSLO_symbols, end, benchmark)
+        all_stocks_OSLO = pd.read_csv('lux_dev/database/all_stocks_OSLO1.csv', encoding='latin', header=0, delimiter=';')
+        all_stocks_OSLO['Symbol'] = all_stocks_OSLO['Symbol'] + '.OL'
+        portofolio_tickers = [stock for stock in self.prtf['tickers']]
+        all_stocks_OSLO_symbols_all = all_stocks_OSLO['Symbol'].dropna()
+        if not os.path.isfile(f'lux_dev/database/stockprices/all_stock_vals{end}.pkl'):
+            all_stock, symbols_not_loaded, all_data_prices = self.grab_symbols_from_yahoo(all_stocks_OSLO_symbols_all, end, benchmark)
+            pickle.dump(all_stock, open(f'lux_dev/database/stockprices/all_stock_vals{end}.pkl', 'wb'))
+        else:
+            all_stock = pickle.load(open(f'lux_dev/database/stockprices/all_stock_vals{end}.pkl', 'rb'))
+        summary = {}
+        for _ in track(range(0, N)):
+            portofolio_tickers_new = np.array(portofolio_tickers)
+            port_samples_to_replace = np.random.randint(0, len(portofolio_tickers_new), N_change)
+            new_port_sample = all_stock.sample(n = N_change, axis = 1)
+            portofolio_tickers_new[port_samples_to_replace] = new_port_sample.columns
+            portofolio_tickers_new_values = all_stock[portofolio_tickers_new]
+            if portofolio_tickers_new_values.shape[1] == len(weights):
+                result = self.portofolio_metrics(portofolio_tickers_new_values, benchmark, weights = weights, optimweights = False)
+                result['tickers'] = portofolio_tickers_new
+                summary[result['sharpe']] = result
+
+        summary = sorted(summary.items(), key=lambda x: x[0], reverse=True)
+        print(summary[:10])
+        exit()
 
 
+    
+    def optimize_portofolio_already_given(self):
+        pass
+        #     mu = expected_returns.mean_historical_return(all_data_prices, compounding= False)
+        #     S = risk_models.sample_cov(all_data_prices)
 
-        mu = expected_returns.mean_historical_return(all_data_prices, compounding= False)
-        S = risk_models.sample_cov(all_data_prices)
-
-        # Optimize for maximal Sharpe ratio
-        ef = EfficientFrontier(mu, S, weight_bounds= weight_bounds)
-        raw_weights = ef.max_sharpe()
-        cleaned_weights = ef.clean_weights()
-        # ef.save_weights_to_file("weights.csv")  # saves to file
-        print(cleaned_weights)
-        ef.portfolio_performance(verbose=True)
+        #     # Optimize for maximal Sharpe ratio
+        #     ef = EfficientFrontier(mu, S, weight_bounds= weight_bounds)
+        #     raw_weights = ef.max_sharpe()
+        #     cleaned_weights = ef.clean_weights()
+        #     # ef.save_weights_to_file("weights.csv")  # saves to file
+        #     print(cleaned_weights)
+        # ef.portfolio_performance(verbose=True)
 
 
     
@@ -373,6 +405,7 @@ class Portofolio:
         mean_rolling = portofolio_value.rolling(window = window_period).mean().dropna()
         std_rolling = portofolio_value.rolling(window = window_period).std().dropna()
 
+        #pickle.dump(portofolio_value, open(f'lux_dev/database/portofolio_snapshots/jinx/{end}.pkl', 'wb'))
 
         print(output)
         print('Last point:', portofolio_value.values[-1])
@@ -405,9 +438,6 @@ class Portofolio:
         plt.savefig(f'lux_dev/database/portofolio_snapshots/jinx/{dt.datetime.now().strftime("%Y-%m-%d")}.pdf')
         plt.close()
 
-        exit()
-
-
 
         sharpehistory = []
         window_period = 60
@@ -427,15 +457,10 @@ class Portofolio:
         sharpehistory = np.array(sharpehistory)
         tradedaycounter = list(range(0, len(sharpehistory)))
 
-        # sharpehistory_rolling30 = pd.DataFrame(sharpehistory).rolling(window = 30, win_type='gaussian').mean(std=3)
-        # tradedaycounter_30 = tradedaycounter[-len(sharpehistory_rolling30):]
-        # sharpehistory_rolling10 = pd.DataFrame(sharpehistory).rolling(window = 30, win_type='gaussian').mean(std=3)
-        # tradedaycounter_10 = tradedaycounter[-len(sharpehistory_rolling10):]
-
         
         # https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/bollinger-bands
 
-        plt.plot(tradedaycounter, sharpehistory, '-', color = 'blue', label = 'Sharpe ratio', linewidth = 1 ,alpha = 0.6)
+        plt.plot(tradedaycounter, sharpehistory, '-', color = 'blue', label = 'Sharpe ratio 60 day', linewidth = 1 ,alpha = 0.6)
         plt.plot(tradedaycounter, np.repeat(1, len(tradedaycounter)), '--', color = 'red', label = 'Bad line')
         plt.plot(sharpehistory_mean, '--', color = 'black', label = 'Mean 60 day SR')
         plt.plot(sharpehistory_mean + ((window_period//3)/10)*sharpehistory_std, '-', color = 'black', linewidth = 1)
@@ -445,41 +470,10 @@ class Portofolio:
         plt.title('Sharpe ratio over time')
         plt.ylabel('Sharpe ratio')
         plt.xlabel('Latest trading days')
-        # fig, ax = plt.subplots(1, 1)
-        # ax[0].plot(tradedaycounter, sharpehistory, '-.', color = 'black', label = 'Sharpe ratio')
-        # # ax[0].plot(tradedaycounter_30, sharpehistory_rolling30, '-.', color = 'red', label = 'Sharpe ratio 30 GMW')
-        # # ax[0].plot(tradedaycounter_10, sharpehistory_rolling10, '-.', color = 'green', label = 'Sharpe ratio 10 GMW')
-        # ax[0].plot(tradedaycounter[-1], sharpehistory[-1], 'o', color = 'green', label = 'Latest trading day', fillstyle = 'none')
-        # ax[0].set_title('Sharpe ratio over time')
-        # ax[0].set_ylabel('Sharpe ratio')
-        # ax[0].set_xlabel('Latest trading days')
-        
-        # ax[1].plot(tradedaycounter, meanhistory, '-.', color = 'black', label = 'Expected return')
-        # ax[1].plot(tradedaycounter[-1], meanhistory[-1], 'o', color = 'green', label = 'Latest trading day', fillstyle = 'none')
-        # ax[1].set_title('Expected return over time')
-        # ax[1].set_ylabel('Expected return')
-        # ax[1].set_xlabel('Latest trading days')
-
-        # ax[2].plot(tradedaycounter, stdhistory, '-.', color = 'black', label = 'Standard deviation')
-        # ax[2].plot(tradedaycounter[-1], stdhistory[-1], 'o', color = 'green', label = 'Latest trading day', fillstyle = 'none')
-        # ax[2].set_title('Standard deviation over time')
-        # ax[2].set_ylabel('Standard deviation')
-        # ax[2].set_xlabel('Latest trading days')
-
-
-        # tradedaycounter_arima = list(range(30, tradedays_full -50+30))
-
-
-        # model = pm.auto_arima(sharpehistory[:-50], error_action='ignore', trace=True,
-        #           suppress_warnings=True, seasonal=True, n_fits = 1000)
-        # forecasts, conf = model.predict(30, return_conf_int=True)  # predict N steps into the future
-
-        # ax[0].plot(tradedaycounter_arima[-30:], forecasts, c='green')
-        # ax[0].fill_between(tradedaycounter_arima[-30:], conf[:, 0], conf[:, 1], color='black', alpha=0.3, )
-
         plt.legend()
         plt.tight_layout()
-        plt.show()
+        plt.savefig(f'lux_dev/database/portofolio_snapshots/jinx/{dt.datetime.now().strftime("%Y-%m-%d")}_SR.pdf')
+        plt.close()
 
 
 
