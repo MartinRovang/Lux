@@ -1,0 +1,6 @@
+START: 3.01.2022
+
+# OrderedDict([('SOON.OL', 0.33494), ('GRONG.OL', 0.06668), ('SNI.OL', 0.05), ('MOWI.OL', 0.05), ('NISB.OL', 0.05), ('POL.OL', 0.09806), ('MORG.OL', 0.20032), ('ODFB.OL', 0.05), ('NSKOG.OL', 0.05), ('BELCO.OL', 0.05)])
+# Expected annual return: 44.7%
+# Annual volatility: 9.7%
+# Sharpe Ratio: 4.39
