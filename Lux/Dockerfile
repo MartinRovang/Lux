@@ -14,5 +14,5 @@ RUN pip install -r /code/requirements.txt
 
 #
 # 
-CMD ["uvicorn", "lux:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "lux:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]
 

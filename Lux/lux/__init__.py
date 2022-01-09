@@ -30,7 +30,8 @@ async def portofolio(filter: str = "weight gt -0.5 and std lt 0.5"):
     filter_operations = [x.split(" ") for x in filter_types]
 
     end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
-    if os.path.exists('lux/database/stockprices/sharpes_ports_{end}.pkl'):
+
+    if os.path.exists(f'lux/database/stockprices/sharpes_ports_{end}.pkl'):
         data  = pickle.load(open(f'lux/database/stockprices/sharpes_ports_{end}.pkl', 'rb'))
         best_ports = [x for x in data]
         output = []
