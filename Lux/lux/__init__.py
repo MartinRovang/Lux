@@ -24,7 +24,7 @@ async def read_root():
 
 
 @app.get("/portofolios/")
-async def portofolio(filter: str = "weight gt -0.5 and std lt 0.5"):
+async def portofolio(filter: str = "weight gt -0.5 and std lt 0.5 and tot = 250"):
     # http://127.0.0.1:8000/portofolios/?filter=weight gt -0.5 and std lt 0.5
     filter_types = filter.split(" and ")
     filter_operations = [x.split(" ") for x in filter_types]
@@ -38,6 +38,7 @@ async def portofolio(filter: str = "weight gt -0.5 and std lt 0.5"):
         for port in best_ports:
             tempweights = np.array(data[port]['weights'])
             tempstds = np.array(data[port]['std'])
+            temptot = 250
 
             for filterop in filter_operations:
                 if filterop[0] == "weight":
@@ -45,16 +46,21 @@ async def portofolio(filter: str = "weight gt -0.5 and std lt 0.5"):
                         tempweights = tempweights > float(filterop[2])
                     elif filterop[1] == "lt":
                         tempweights = tempweights < float(filterop[2])
+
                 elif filterop[0] == "std":
                     if filterop[1] == "gt":
                         tempstds = tempstds > float(filterop[2])
                     elif filterop[1] == "lt":
                         tempstds = tempstds < float(filterop[2])
+                
+                elif filterop[0] == "tot":
+                    if filterop[1] == "=":
+                        temptot = int(filterop[2])
 
                 if all(tempweights) and tempstds:
                     output.append({'sharpeRatio':data[port]['sharpe'] , 'meanReturn':data[port]['mean'], 'std':data[port]['std'],'portofolio': list(data[port]['portofolio']), "weights":list(data[port]['weights'])})
             
-            if len(output) > 250:
+            if len(output) > temptot:
                 break
         return output
     else:
