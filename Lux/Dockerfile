@@ -9,6 +9,7 @@ COPY ./requirements.txt /code/requirements.txt
 COPY ./lux /code/lux
 
 # 
+RUN python -m pip install --upgrade pip
 RUN pip install -r /code/requirements.txt
 
 #
