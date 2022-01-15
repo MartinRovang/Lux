@@ -1,26 +1,16 @@
 __version__ = '0.1.0'
 from fastapi import FastAPI
-import asyncio
-import time
-import threading
-from lux.src.tools.pricefetcher import grab_newest_data_auto
-from lux.src.tools.portofolio_kit import iter_portofolio
 import pickle
 import datetime as dt
 import numpy as np
-import json
 import os
 app = FastAPI()
 
-x = threading.Thread(target = grab_newest_data_auto)
-x.daemon = True
-x.start()
 
 
 @app.get("/")
 async def read_root():
     return {'hello': 'world'}
-
 
 
 @app.get("/portofolios/")
