@@ -6,5 +6,23 @@ services:
       - '8080:8080'
     build:
       context: .
+      dockerfile: ./docker/lux/Dockerfile
+    volumes:
+      - data:/copy/lux/database
 
+  backgroundtask1:
+    build:
+      context: .
+      dockerfile: ./docker/backgroundtasks/task1/Dockerfile
+    volumes:
+      - data:/code/backgroundtasks/tools/database
+  
+  # backgroundtask2:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/backgroundtasks/task2/Dockerfile
+  #   volumes:
+  #     - data:/task/database
 
+volumes:
+    data:
