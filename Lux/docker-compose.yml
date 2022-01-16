@@ -8,21 +8,21 @@ services:
       context: .
       dockerfile: ./docker/lux/Dockerfile
     volumes:
-      - data:/copy/lux/database
+      - data:/code/lux/database
 
-  backgroundtask1:
-    build:
-      context: .
-      dockerfile: ./docker/backgroundtasks/task1/Dockerfile
-    volumes:
-      - data:/code/backgroundtasks/tools/database
-  
-  # backgroundtask2:
+  # backgroundtask1:
   #   build:
   #     context: .
-  #     dockerfile: ./docker/backgroundtasks/task2/Dockerfile
+  #     dockerfile: ./docker/backgroundtasks/task1/Dockerfile
   #   volumes:
-  #     - data:/task/database
+  #     - data:/code/backgroundtasks/tools/database
+  
+  backgroundtask2:
+    build:
+      context: .
+      dockerfile: ./docker/backgroundtasks/task2/Dockerfile
+    volumes:
+      - data:/code/backgroundtasks/tools/database
 
 volumes:
     data:

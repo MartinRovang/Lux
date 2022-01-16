@@ -11,7 +11,7 @@ import time
 
 
 def logger(text):
-    with open('logger.txt', 'a') as f:
+    with open('/code/backgroundtasks/tools/database/logger.txt', 'a') as f:
         f.write(f'{text} |{dt.datetime.now().strftime("%Y-%m-%d-%M-%S") }\n')
 
 
@@ -34,21 +34,21 @@ def make_portofolios():
         logger('Using make_portofolios function')
         time.sleep(50)
         end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
-        if os.path.exists(f'database/stockprices/all_stock_values_{end}.pkl'):
+        if os.path.exists(f'/code/backgroundtasks/tools/database/stockprices/all_stock_values_{end}.pkl'):
             logger('Making portofolios')
-            all_data_prices = pickle.load(open(f'database/stockprices/all_stock_values_{end}.pkl', 'rb'))
+            all_data_prices = pickle.load(open(f'/code/backgroundtasks/tools/database/stockprices/all_stock_values_{end}.pkl', 'rb'))
             all_data_prices_returns = all_data_prices.pct_change()
             portofolio_size = 10
             output = portofolio_kit.iter_portofolio(portofolio_size, all_data_prices_returns, N_iterations = 100_000)
-            if os.path.exists(f'database/stockprices/sharpes_ports_{end}.pkl'):
-                data  = pickle.load(open(f'database/stockprices/sharpes_ports_{end}.pkl', 'rb'))
+            if os.path.exists(f'/code/backgroundtasks/tools/database/stockprices/sharpes_ports_{end}.pkl'):
+                data  = pickle.load(open(f'/code/backgroundtasks/tools/databasestockprices/sharpes_ports_{end}.pkl', 'rb'))
                 data = data.update(output)
                 output = {k: v for k, v in sorted(output.items(), key=lambda item: item[1]['sharpe'], reverse=True)}
-                output = dict(itertools.islice(output.items(), 300000)) 
-                pickle.dump(output, open(f'database/stockprices/sharpes_ports_{end}.pkl', 'wb'))
+                output = dict(itertools.islice(output.items(), 200000)) 
+                pickle.dump(output, open(f'/code/backgroundtasks/tools/database/stockprices/sharpes_ports_{end}.pkl', 'wb'))
             else:
                 output = {k: v for k, v in sorted(output.items(), key=lambda item: item[1]['sharpe'], reverse=True)}
-                pickle.dump(output, open(f'database/stockprices/sharpes_ports_{end}.pkl', 'wb'))
+                pickle.dump(output, open(f'/code/backgroundtasks/tools/database/stockprices/sharpes_ports_{end}.pkl', 'wb'))
 
 
 
@@ -58,12 +58,12 @@ def grab_newest_data_auto():
     while True:
         logger('grab_newest_data_auto function')
         end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
-        files = glob.glob('database/stockprices/*')
-        if not os.path.exists(f'database/stockprices/all_stock_values_{end}.pkl'):
+        files = glob.glob('/code/backgroundtasks/tools/database/stockprices/*')
+        if not os.path.exists(f'/code/backgroundtasks/tools/database/stockprices/all_stock_values_{end}.pkl'):
             logger('Grabbing data')
             for f in files:
                 os.remove(f)
-            all_stocks_OSLO = pd.read_csv('database/all_stocks_OSLO1.csv', encoding='latin', header=0, delimiter=';')
+            all_stocks_OSLO = pd.read_csv('/code/backgroundtasks/tools/database/all_stocks_OSLO1.csv', encoding='latin', header=0, delimiter=';')
             all_stocks_OSLO['Symbol'] = all_stocks_OSLO['Symbol'] + '.OL'
             all_stocks_OSLO_symbols = all_stocks_OSLO['Symbol'].dropna()
             symbols_according_to_index = []
@@ -77,15 +77,15 @@ def grab_newest_data_auto():
                 all_data_prices = pd.concat([all_data_prices, data_prices], axis = 1)
 
             all_data_prices = pd.DataFrame(all_data_prices.values, index = all_data_prices.index, columns = symbols_according_to_index)
-            pickle.dump(all_data_prices, open(f'database/stockprices/all_stock_values_{end}.pkl', 'wb'))
+            pickle.dump(all_data_prices, open(f'/code/backgroundtasks/tools/database/stockprices/all_stock_values_{end}.pkl', 'wb'))
         
-        if not os.path.exists(f'database/stockprices/sharpes_ports_{end}.pkl'):
+        if not os.path.exists(f'/code/backgroundtasks/tools/database/stockprices/sharpes_ports_{end}.pkl'):
             logger('Making sharpe portofolios')
-            all_data_prices = pickle.load(open(f'database/stockprices/all_stock_values_{end}.pkl', 'rb'))
+            all_data_prices = pickle.load(open(f'/code/backgroundtasks/tools/database/stockprices/all_stock_values_{end}.pkl', 'rb'))
             all_data_prices_returns = all_data_prices.pct_change()
             portofolio_size = 10
-            output = portofolio_kit.iter_portofolio(portofolio_size, all_data_prices_returns, N_iterations = 100_000)
-            pickle.dump(output, open(f'database/stockprices/sharpes_ports_{end}.pkl', 'wb'))
+            output = portofolio_kit.iter_portofolio(portofolio_size, all_data_prices_returns, N_iterations = 200_000)
+            pickle.dump(output, open(f'/code/backgroundtasks/tools/database/stockprices/sharpes_ports_{end}.pkl', 'wb'))
             logger('End of making sharpe portofolios')
         else:
-            time.sleep(100)
+            time.sleep(2)

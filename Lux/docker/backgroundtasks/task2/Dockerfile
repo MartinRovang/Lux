@@ -11,4 +11,4 @@ RUN python -m pip install --upgrade pip
 RUN pip install -r /code/requirements.txt
 
 
-CMD python3 /code/backgroundtasks/tools/backgroundprocess1.py
+CMD python3 /code/backgroundtasks/tools/backgroundprocess2.py
