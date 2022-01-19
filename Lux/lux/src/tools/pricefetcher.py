@@ -54,8 +54,12 @@ def make_portofolios():
 
 
 def grab_newest_data_auto():
-
+    k = 0
     while True:
+        k+=1
+        print(k)
+        # https://datahub.io/core/s-and-p-500-companies#python
+        # https://www.nasdaq.com/market-activity/stocks/screener
         logger('grab_newest_data_auto function')
         end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
         files = glob.glob('/code/backgroundtasks/tools/database/stockprices/*')
@@ -64,8 +68,13 @@ def grab_newest_data_auto():
             for f in files:
                 os.remove(f)
             all_stocks_OSLO = pd.read_csv('/code/backgroundtasks/tools/database/all_stocks_OSLO1.csv', encoding='latin', header=0, delimiter=';')
+            all_stocks_OSLO_usa = pd.read_csv('/code/backgroundtasks/tools/database/nasdaq_screener_1642613531154.csv', encoding='latin', header=0, delimiter=',')['Symbol'].dropna()
+            all_stocks_OSLO_usa_sandp = pd.read_csv('/code/backgroundtasks/tools/database/constituents_csv.csv', encoding='latin', header=0, delimiter=',')['Symbol'].dropna()
+            all_stocks_many = pd.read_csv('/code/backgroundtasks/tools/database/nasdaq_screener_1642614801921.csv', encoding='latin', header=0, delimiter=',')['Symbol'].dropna()
             all_stocks_OSLO['Symbol'] = all_stocks_OSLO['Symbol'] + '.OL'
             all_stocks_OSLO_symbols = all_stocks_OSLO['Symbol'].dropna()
+            all_stocks_OSLO_symbols = pd.concat([all_stocks_OSLO_usa, all_stocks_OSLO_symbols, all_stocks_OSLO_usa_sandp, all_stocks_many])
+
             symbols_according_to_index = []
             all_data_prices = pd.DataFrame()
             for _ , stocksymbol in enumerate(all_stocks_OSLO_symbols):
