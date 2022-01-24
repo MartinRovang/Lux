@@ -9,8 +9,8 @@ import portofolio_kit
 import itertools
 import time
 
-path = '/code/backgroundtasks/tools/database'
-#path = '../../database'
+# path = '/code/backgroundtasks/tools/database'
+path = '../../database'
 
 def logger(text):
     with open(f'{path}/logger.txt', 'a') as f:

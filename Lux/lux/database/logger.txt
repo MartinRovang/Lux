@@ -548,3 +548,553 @@ HSHIP.OL 'Date' |2022-01-20-36-17
 ROMER.OL 'Date' |2022-01-20-40-56
 BRK.B 'Date' |2022-01-20-47-10
 BF.B 'Date' |2022-01-20-47-52
+[Errno 22] Invalid argument: '../../database/stockprices/all_stock_values_(2022, 1, 20).pkl'|2022-01-20-01-32 |2022-01-20-01-32
+grab_newest_data_auto function |2022-01-24-22-50
+Grabbing data |2022-01-24-22-50
+AAIC^B No data fetched for symbol AAIC^B using YahooDailyReader |2022-01-24-22-59
+AAIC^C No data fetched for symbol AAIC^C using YahooDailyReader |2022-01-24-23-00
+AAM^A No data fetched for symbol AAM^A using YahooDailyReader |2022-01-24-23-02
+AAM^B No data fetched for symbol AAM^B using YahooDailyReader |2022-01-24-23-03
+ABR^D No data fetched for symbol ABR^D using YahooDailyReader |2022-01-24-23-25
+ABR^E No data fetched for symbol ABR^E using YahooDailyReader |2022-01-24-23-26
+ABR^F No data fetched for symbol ABR^F using YahooDailyReader |2022-01-24-23-27
+ACP^A No data fetched for symbol ACP^A using YahooDailyReader |2022-01-24-24-08
+ACR^C No data fetched for symbol ACR^C using YahooDailyReader |2022-01-24-24-11
+ACR^D No data fetched for symbol ACR^D using YahooDailyReader |2022-01-24-24-12
+ADC^A No data fetched for symbol ADC^A using YahooDailyReader |2022-01-24-24-28
+AEL^A No data fetched for symbol AEL^A using YahooDailyReader |2022-01-24-25-11
+AEL^B No data fetched for symbol AEL^B using YahooDailyReader |2022-01-24-25-12
+AGBAR 'Date' |2022-01-24-26-25
+AGM^C No data fetched for symbol AGM^C using YahooDailyReader |2022-01-24-27-02
+AGM^D No data fetched for symbol AGM^D using YahooDailyReader |2022-01-24-27-03
+AGM^E No data fetched for symbol AGM^E using YahooDailyReader |2022-01-24-27-04
+AGM^F No data fetched for symbol AGM^F using YahooDailyReader |2022-01-24-27-06
+AGM^G No data fetched for symbol AGM^G using YahooDailyReader |2022-01-24-27-07
+AHH^A No data fetched for symbol AHH^A using YahooDailyReader |2022-01-24-27-52
+AHL^C No data fetched for symbol AHL^C using YahooDailyReader |2022-01-24-27-56
+AHL^D No data fetched for symbol AHL^D using YahooDailyReader |2022-01-24-27-57
+AHL^E No data fetched for symbol AHL^E using YahooDailyReader |2022-01-24-27-58
+AHT^D No data fetched for symbol AHT^D using YahooDailyReader |2022-01-24-28-08
+AHT^F No data fetched for symbol AHT^F using YahooDailyReader |2022-01-24-28-09
+AHT^G No data fetched for symbol AHT^G using YahooDailyReader |2022-01-24-28-10
+AHT^H No data fetched for symbol AHT^H using YahooDailyReader |2022-01-24-28-12
+AHT^I No data fetched for symbol AHT^I using YahooDailyReader |2022-01-24-28-13
+AIG^A No data fetched for symbol AIG^A using YahooDailyReader |2022-01-24-28-26
+AKO/A Unable to read URL: https://finance.yahoo.com/quote/AKO/A/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fAKO%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fAKO%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-29-34
+AKO/B Unable to read URL: https://finance.yahoo.com/quote/AKO/B/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fAKO%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fAKO%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-29-37
+AL^A No data fetched for symbol AL^A using YahooDailyReader |2022-01-24-29-55
+ALACR 'Date' |2022-01-24-29-59
+ALIN^A No data fetched for symbol ALIN^A using YahooDailyReader |2022-01-24-30-41
+ALIN^B No data fetched for symbol ALIN^B using YahooDailyReader |2022-01-24-30-42
+ALIN^E No data fetched for symbol ALIN^E using YahooDailyReader |2022-01-24-30-43
+ALL^B No data fetched for symbol ALL^B using YahooDailyReader |2022-01-24-30-58
+ALL^G No data fetched for symbol ALL^G using YahooDailyReader |2022-01-24-30-59
+ALL^H No data fetched for symbol ALL^H using YahooDailyReader |2022-01-24-31-00
+ALL^I No data fetched for symbol ALL^I using YahooDailyReader |2022-01-24-31-02
+ALP^Q No data fetched for symbol ALP^Q using YahooDailyReader |2022-01-24-31-28
+ALTG^A No data fetched for symbol ALTG^A using YahooDailyReader |2022-01-24-31-57
+AMH^F No data fetched for symbol AMH^F using YahooDailyReader |2022-01-24-33-14
+AMH^G No data fetched for symbol AMH^G using YahooDailyReader |2022-01-24-33-15
+AMH^H No data fetched for symbol AMH^H using YahooDailyReader |2022-01-24-33-16
+APTV^A No data fetched for symbol APTV^A using YahooDailyReader |2022-01-24-37-00
+ARGO^A No data fetched for symbol ARGO^A using YahooDailyReader |2022-01-24-38-24
+ARR^C No data fetched for symbol ARR^C using YahooDailyReader |2022-01-24-39-15
+ASB^E No data fetched for symbol ASB^E using YahooDailyReader |2022-01-24-40-07
+ASB^F No data fetched for symbol ASB^F using YahooDailyReader |2022-01-24-40-08
+ATCO^D No data fetched for symbol ATCO^D using YahooDailyReader |2022-01-24-41-41
+ATCO^H No data fetched for symbol ATCO^H using YahooDailyReader |2022-01-24-41-42
+ATCO^I No data fetched for symbol ATCO^I using YahooDailyReader |2022-01-24-41-43
+ATH^A No data fetched for symbol ATH^A using YahooDailyReader |2022-01-24-41-58
+ATH^B No data fetched for symbol ATH^B using YahooDailyReader |2022-01-24-42-00
+ATH^C No data fetched for symbol ATH^C using YahooDailyReader |2022-01-24-42-01
+ATH^D No data fetched for symbol ATH^D using YahooDailyReader |2022-01-24-42-02
+AVTR^A No data fetched for symbol AVTR^A using YahooDailyReader |2022-01-24-45-23
+AXS^E No data fetched for symbol AXS^E using YahooDailyReader |2022-01-24-46-16
+BAC^B No data fetched for symbol BAC^B using YahooDailyReader |2022-01-24-47-08
+BAC^E No data fetched for symbol BAC^E using YahooDailyReader |2022-01-24-47-09
+BAC^K No data fetched for symbol BAC^K using YahooDailyReader |2022-01-24-47-11
+BAC^L No data fetched for symbol BAC^L using YahooDailyReader |2022-01-24-47-12
+BAC^M No data fetched for symbol BAC^M using YahooDailyReader |2022-01-24-47-14
+BAC^N No data fetched for symbol BAC^N using YahooDailyReader |2022-01-24-47-15
+BAC^O No data fetched for symbol BAC^O using YahooDailyReader |2022-01-24-47-16
+BAC^P No data fetched for symbol BAC^P using YahooDailyReader |2022-01-24-47-17
+BAC^Q No data fetched for symbol BAC^Q using YahooDailyReader |2022-01-24-47-19
+BANC^E No data fetched for symbol BANC^E using YahooDailyReader |2022-01-24-47-44
+BC^A No data fetched for symbol BC^A using YahooDailyReader |2022-01-24-49-12
+BC^B No data fetched for symbol BC^B using YahooDailyReader |2022-01-24-49-13
+BC^C No data fetched for symbol BC^C using YahooDailyReader |2022-01-24-49-14
+BCV^A No data fetched for symbol BCV^A using YahooDailyReader |2022-01-24-50-15
+BEP^A No data fetched for symbol BEP^A using YahooDailyReader |2022-01-24-51-21
+BF/A Unable to read URL: https://finance.yahoo.com/quote/BF/A/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fBF%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fBF%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-51-34
+BF/B Unable to read URL: https://finance.yahoo.com/quote/BF/B/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fBF%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fBF%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-51-37
+BFS^D No data fetched for symbol BFS^D using YahooDailyReader |2022-01-24-52-02
+BFS^E No data fetched for symbol BFS^E using YahooDailyReader |2022-01-24-52-03
+BHR^B No data fetched for symbol BHR^B using YahooDailyReader |2022-01-24-53-24
+BHR^D No data fetched for symbol BHR^D using YahooDailyReader |2022-01-24-53-26
+BIO/B Unable to read URL: https://finance.yahoo.com/quote/BIO/B/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fBIO%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fBIO%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-53-57
+BIP^A No data fetched for symbol BIP^A using YahooDailyReader |2022-01-24-54-17
+BIP^B No data fetched for symbol BIP^B using YahooDailyReader |2022-01-24-54-18
+BLEUR 'Date' |2022-01-24-55-45
+BMAQR 'Date' |2022-01-24-56-48
+BML^G No data fetched for symbol BML^G using YahooDailyReader |2022-01-24-57-02
+BML^H No data fetched for symbol BML^H using YahooDailyReader |2022-01-24-57-04
+BML^J No data fetched for symbol BML^J using YahooDailyReader |2022-01-24-57-05
+BML^L No data fetched for symbol BML^L using YahooDailyReader |2022-01-24-57-06
+BOH^A No data fetched for symbol BOH^A using YahooDailyReader |2022-01-24-58-07
+BREZR 'Date' |2022-01-24-59-30
+BRG^C No data fetched for symbol BRG^C using YahooDailyReader |2022-01-24-59-36
+BRG^D No data fetched for symbol BRG^D using YahooDailyReader |2022-01-24-59-37
+BRK/A Unable to read URL: https://finance.yahoo.com/quote/BRK/A/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fBRK%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fBRK%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-59-47
+BRK/B Unable to read URL: https://finance.yahoo.com/quote/BRK/B/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fBRK%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fBRK%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-59-50
+BRLIR 'Date' |2022-01-24-00-00
+BSGAR 'Date' |2022-01-24-01-02
+BSX^A No data fetched for symbol BSX^A using YahooDailyReader |2022-01-24-01-37
+BW^A No data fetched for symbol BW^A using YahooDailyReader |2022-01-24-03-01
+C^J No data fetched for symbol C^J using YahooDailyReader |2022-01-24-04-29
+C^K No data fetched for symbol C^K using YahooDailyReader |2022-01-24-04-30
+C^N No data fetched for symbol C^N using YahooDailyReader |2022-01-24-04-31
+CADE^A No data fetched for symbol CADE^A using YahooDailyReader |2022-01-24-04-52
+CDR^B No data fetched for symbol CDR^B using YahooDailyReader |2022-01-24-08-52
+CDR^C No data fetched for symbol CDR^C using YahooDailyReader |2022-01-24-08-53
+CEQP^ No data fetched for symbol CEQP^ using YahooDailyReader |2022-01-24-10-07
+CFG^D No data fetched for symbol CFG^D using YahooDailyReader |2022-01-24-10-53
+CFG^E No data fetched for symbol CFG^E using YahooDailyReader |2022-01-24-10-54
+CFR^B No data fetched for symbol CFR^B using YahooDailyReader |2022-01-24-11-06
+CHMI^A No data fetched for symbol CHMI^A using YahooDailyReader |2022-01-24-12-31
+CHMI^B No data fetched for symbol CHMI^B using YahooDailyReader |2022-01-24-12-32
+CIM^A No data fetched for symbol CIM^A using YahooDailyReader |2022-01-24-14-10
+CIM^B No data fetched for symbol CIM^B using YahooDailyReader |2022-01-24-14-12
+CIM^C No data fetched for symbol CIM^C using YahooDailyReader |2022-01-24-14-14
+CIM^D No data fetched for symbol CIM^D using YahooDailyReader |2022-01-24-14-15
+CIO^A No data fetched for symbol CIO^A using YahooDailyReader |2022-01-24-14-30
+CLAQR 'Date' |2022-01-24-15-05
+CLDT^A No data fetched for symbol CLDT^A using YahooDailyReader |2022-01-24-15-33
+CLOER 'Date' |2022-01-24-16-06
+CLVT^A No data fetched for symbol CLVT^A using YahooDailyReader |2022-01-24-16-48
+CMRE^B No data fetched for symbol CMRE^B using YahooDailyReader |2022-01-24-17-52
+CMRE^C No data fetched for symbol CMRE^C using YahooDailyReader |2022-01-24-17-53
+CMRE^D No data fetched for symbol CMRE^D using YahooDailyReader |2022-01-24-17-54
+CMRE^E No data fetched for symbol CMRE^E using YahooDailyReader |2022-01-24-17-56
+CMS^B No data fetched for symbol CMS^B using YahooDailyReader |2022-01-24-18-02
+CMS^C No data fetched for symbol CMS^C using YahooDailyReader |2022-01-24-18-03
+CNO^A No data fetched for symbol CNO^A using YahooDailyReader |2022-01-24-19-04
+CODI^A No data fetched for symbol CODI^A using YahooDailyReader |2022-01-24-19-56
+CODI^B No data fetched for symbol CODI^B using YahooDailyReader |2022-01-24-19-58
+CODI^C No data fetched for symbol CODI^C using YahooDailyReader |2022-01-24-19-59
+COF^I No data fetched for symbol COF^I using YahooDailyReader |2022-01-24-20-07
+COF^J No data fetched for symbol COF^J using YahooDailyReader |2022-01-24-20-09
+COF^K No data fetched for symbol COF^K using YahooDailyReader |2022-01-24-20-11
+COF^L No data fetched for symbol COF^L using YahooDailyReader |2022-01-24-20-12
+COF^N No data fetched for symbol COF^N using YahooDailyReader |2022-01-24-20-13
+CORR^A No data fetched for symbol CORR^A using YahooDailyReader |2022-01-24-21-23
+CRD/A Unable to read URL: https://finance.yahoo.com/quote/CRD/A/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fCRD%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fCRD%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-23-17
+CRD/B Unable to read URL: https://finance.yahoo.com/quote/CRD/B/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fCRD%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fCRD%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-23-20
+CSR^C No data fetched for symbol CSR^C using YahooDailyReader |2022-01-24-25-39
+CTA^A No data fetched for symbol CTA^A using YahooDailyReader |2022-01-24-26-08
+CTA^B No data fetched for symbol CTA^B using YahooDailyReader |2022-01-24-26-09
+CTO^A No data fetched for symbol CTO^A using YahooDailyReader |2022-01-24-26-52
+CUBI^E No data fetched for symbol CUBI^E using YahooDailyReader |2022-01-24-27-35
+CUBI^F No data fetched for symbol CUBI^F using YahooDailyReader |2022-01-24-27-36
+DBRG^H No data fetched for symbol DBRG^H using YahooDailyReader |2022-01-24-31-21
+DBRG^I No data fetched for symbol DBRG^I using YahooDailyReader |2022-01-24-31-22
+DBRG^J No data fetched for symbol DBRG^J using YahooDailyReader |2022-01-24-31-24
+DCP^B No data fetched for symbol DCP^B using YahooDailyReader |2022-01-24-31-55
+DCP^C No data fetched for symbol DCP^C using YahooDailyReader |2022-01-24-31-56
+DHR^A No data fetched for symbol DHR^A using YahooDailyReader |2022-01-24-34-01
+DHR^B No data fetched for symbol DHR^B using YahooDailyReader |2022-01-24-34-02
+DLNG^A No data fetched for symbol DLNG^A using YahooDailyReader |2022-01-24-35-18
+DLNG^B No data fetched for symbol DLNG^B using YahooDailyReader |2022-01-24-35-19
+DLR^J No data fetched for symbol DLR^J using YahooDailyReader |2022-01-24-35-27
+DLR^K No data fetched for symbol DLR^K using YahooDailyReader |2022-01-24-35-28
+DLR^L No data fetched for symbol DLR^L using YahooDailyReader |2022-01-24-35-29
+DMAQR 'Date' |2022-01-24-35-48
+DRH^A No data fetched for symbol DRH^A using YahooDailyReader |2022-01-24-37-31
+DS^B No data fetched for symbol DS^B using YahooDailyReader |2022-01-24-37-51
+DS^C No data fetched for symbol DS^C using YahooDailyReader |2022-01-24-37-53
+DS^D No data fetched for symbol DS^D using YahooDailyReader |2022-01-24-37-54
+DSX^B No data fetched for symbol DSX^B using YahooDailyReader |2022-01-24-38-27
+DTLA^ No data fetched for symbol DTLA^ using YahooDailyReader |2022-01-24-38-44
+DUK^A No data fetched for symbol DUK^A using YahooDailyReader |2022-01-24-39-08
+DX^C No data fetched for symbol DX^C using YahooDailyReader |2022-01-24-39-44
+EAI 'Date' |2022-01-24-40-28
+ECC            No data fetched for symbol ECC            using YahooDailyReader |2022-01-24-41-12
+ECC^D No data fetched for symbol ECC^D using YahooDailyReader |2022-01-24-41-14
+ECF^A No data fetched for symbol ECF^A using YahooDailyReader |2022-01-24-41-27
+ECOM           No data fetched for symbol ECOM           using YahooDailyReader |2022-01-24-41-36
+EFC^A No data fetched for symbol EFC^A using YahooDailyReader |2022-01-24-42-31
+EFC^B No data fetched for symbol EFC^B using YahooDailyReader |2022-01-24-42-32
+EMP 'Date' |2022-01-24-45-12
+ENERR 'Date' |2022-01-24-45-30
+EP^C No data fetched for symbol EP^C using YahooDailyReader |2022-01-24-47-10
+EPR^C No data fetched for symbol EPR^C using YahooDailyReader |2022-01-24-47-35
+EPR^E No data fetched for symbol EPR^E using YahooDailyReader |2022-01-24-47-36
+EPR^G No data fetched for symbol EPR^G using YahooDailyReader |2022-01-24-47-38
+EQC^D No data fetched for symbol EQC^D using YahooDailyReader |2022-01-24-47-55
+EQH^A No data fetched for symbol EQH^A using YahooDailyReader |2022-01-24-48-00
+EQH^C No data fetched for symbol EQH^C using YahooDailyReader |2022-01-24-48-01
+ESSCR 'Date' |2022-01-24-49-49
+ET^C No data fetched for symbol ET^C using YahooDailyReader |2022-01-24-50-03
+ET^D No data fetched for symbol ET^D using YahooDailyReader |2022-01-24-50-04
+ET^E No data fetched for symbol ET^E using YahooDailyReader |2022-01-24-50-06
+ETI^ No data fetched for symbol ETI^ using YahooDailyReader |2022-01-24-50-22
+ETX            No data fetched for symbol ETX            using YahooDailyReader |2022-01-24-50-52
+F^B No data fetched for symbol F^B using YahooDailyReader |2022-01-24-53-28
+F^C No data fetched for symbol F^C using YahooDailyReader |2022-01-24-53-29
+FBRT^E No data fetched for symbol FBRT^E using YahooDailyReader |2022-01-24-54-42
+FEI            No data fetched for symbol FEI            using YahooDailyReader |2022-01-24-55-50
+FEXDR 'Date' |2022-01-24-56-14
+FHN^B No data fetched for symbol FHN^B using YahooDailyReader |2022-01-24-57-10
+FHN^C No data fetched for symbol FHN^C using YahooDailyReader |2022-01-24-57-12
+FHN^D No data fetched for symbol FHN^D using YahooDailyReader |2022-01-24-57-14
+FHN^E No data fetched for symbol FHN^E using YahooDailyReader |2022-01-24-57-15
+FHN^F No data fetched for symbol FHN^F using YahooDailyReader |2022-01-24-57-16
+FNB^E No data fetched for symbol FNB^E using YahooDailyReader |2022-01-24-00-08
+FRC^H No data fetched for symbol FRC^H using YahooDailyReader |2022-01-24-01-59
+FRC^I No data fetched for symbol FRC^I using YahooDailyReader |2022-01-24-02-00
+FRC^J No data fetched for symbol FRC^J using YahooDailyReader |2022-01-24-02-01
+FRC^K No data fetched for symbol FRC^K using YahooDailyReader |2022-01-24-02-02
+FRC^L No data fetched for symbol FRC^L using YahooDailyReader |2022-01-24-02-03
+FRC^M No data fetched for symbol FRC^M using YahooDailyReader |2022-01-24-02-05
+FRC^N No data fetched for symbol FRC^N using YahooDailyReader |2022-01-24-02-06
+FRT^C No data fetched for symbol FRT^C using YahooDailyReader |2022-01-24-03-06
+FTAI^A No data fetched for symbol FTAI^A using YahooDailyReader |2022-01-24-04-17
+FTAI^B No data fetched for symbol FTAI^B using YahooDailyReader |2022-01-24-04-18
+FTAI^C No data fetched for symbol FTAI^C using YahooDailyReader |2022-01-24-04-19
+FXCOR 'Date' |2022-01-24-06-03
+GAB^G No data fetched for symbol GAB^G using YahooDailyReader |2022-01-24-06-20
+GAB^H No data fetched for symbol GAB^H using YahooDailyReader |2022-01-24-06-21
+GAB^J No data fetched for symbol GAB^J using YahooDailyReader |2022-01-24-06-22
+GAB^K No data fetched for symbol GAB^K using YahooDailyReader |2022-01-24-06-23
+GAM^B No data fetched for symbol GAM^B using YahooDailyReader |2022-01-24-06-44
+GBRGR 'Date' |2022-01-24-07-43
+GDL^C No data fetched for symbol GDL^C using YahooDailyReader |2022-01-24-08-29
+GDV^G No data fetched for symbol GDV^G using YahooDailyReader |2022-01-24-08-47
+GDV^H No data fetched for symbol GDV^H using YahooDailyReader |2022-01-24-08-49
+GDV^K No data fetched for symbol GDV^K using YahooDailyReader |2022-01-24-08-51
+GECCM 'Date' |2022-01-24-09-00
+GGGVR 'Date' |2022-01-24-10-13
+GGN^B No data fetched for symbol GGN^B using YahooDailyReader |2022-01-24-10-22
+GGT^E No data fetched for symbol GGT^E using YahooDailyReader |2022-01-24-10-32
+GGT^G No data fetched for symbol GGT^G using YahooDailyReader |2022-01-24-10-33
+GL^D No data fetched for symbol GL^D using YahooDailyReader |2022-01-24-12-06
+GLLIR 'Date' |2022-01-24-12-45
+GLOG^A No data fetched for symbol GLOG^A using YahooDailyReader |2022-01-24-12-59
+GLOP^A No data fetched for symbol GLOP^A using YahooDailyReader |2022-01-24-13-03
+GLOP^B No data fetched for symbol GLOP^B using YahooDailyReader |2022-01-24-13-05
+GLOP^C No data fetched for symbol GLOP^C using YahooDailyReader |2022-01-24-13-07
+GLP^A No data fetched for symbol GLP^A using YahooDailyReader |2022-01-24-13-11
+GLP^B No data fetched for symbol GLP^B using YahooDailyReader |2022-01-24-13-12
+GLU^A No data fetched for symbol GLU^A using YahooDailyReader |2022-01-24-13-41
+GLU^B No data fetched for symbol GLU^B using YahooDailyReader |2022-01-24-13-42
+GMRE^A No data fetched for symbol GMRE^A using YahooDailyReader |2022-01-24-14-24
+GNE^A No data fetched for symbol GNE^A using YahooDailyReader |2022-01-24-14-43
+GNL^A No data fetched for symbol GNL^A using YahooDailyReader |2022-01-24-14-50
+GNL^B No data fetched for symbol GNL^B using YahooDailyReader |2022-01-24-14-51
+GNT^A No data fetched for symbol GNT^A using YahooDailyReader |2022-01-24-15-06
+GPCOR 'Date' |2022-01-24-16-25
+GPMT^A No data fetched for symbol GPMT^A using YahooDailyReader |2022-01-24-16-40
+GRBK^A No data fetched for symbol GRBK^A using YahooDailyReader |2022-01-24-17-05
+GS^A No data fetched for symbol GS^A using YahooDailyReader |2022-01-24-18-01
+GS^C No data fetched for symbol GS^C using YahooDailyReader |2022-01-24-18-02
+GS^D No data fetched for symbol GS^D using YahooDailyReader |2022-01-24-18-04
+GS^J No data fetched for symbol GS^J using YahooDailyReader |2022-01-24-18-05
+GS^K No data fetched for symbol GS^K using YahooDailyReader |2022-01-24-18-07
+GSL^B No data fetched for symbol GSL^B using YahooDailyReader |2022-01-24-18-38
+GUT^A No data fetched for symbol GUT^A using YahooDailyReader |2022-01-24-19-58
+GUT^C No data fetched for symbol GUT^C using YahooDailyReader |2022-01-24-19-59
+HEI/A Unable to read URL: https://finance.yahoo.com/quote/HEI/A/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fHEI%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fHEI%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-23-07
+HFRO^A No data fetched for symbol HFRO^A using YahooDailyReader |2022-01-24-23-40
+HHGCR 'Date' |2022-01-24-24-03
+HIG^G No data fetched for symbol HIG^G using YahooDailyReader |2022-01-24-24-28
+HL^B No data fetched for symbol HL^B using YahooDailyReader |2022-01-24-25-09
+HMLP^A No data fetched for symbol HMLP^A using YahooDailyReader |2022-01-24-26-03
+HPP^C No data fetched for symbol HPP^C using YahooDailyReader |2022-01-24-27-38
+HT^C No data fetched for symbol HT^C using YahooDailyReader |2022-01-24-28-52
+HT^D No data fetched for symbol HT^D using YahooDailyReader |2022-01-24-28-54
+HT^E No data fetched for symbol HT^E using YahooDailyReader |2022-01-24-28-55
+HVT/A Unable to read URL: https://finance.yahoo.com/quote/HVT/A/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fHVT%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fHVT%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-30-29
+HWM^ No data fetched for symbol HWM^ using YahooDailyReader |2022-01-24-30-47
+ICR^A No data fetched for symbol ICR^A using YahooDailyReader |2022-01-24-32-56
+IIPR^A No data fetched for symbol IIPR^A using YahooDailyReader |2022-01-24-35-07
+IMAQR 'Date' |2022-01-24-35-29
+INN^E No data fetched for symbol INN^E using YahooDailyReader |2022-01-24-37-37
+INN^F No data fetched for symbol INN^F using YahooDailyReader |2022-01-24-37-38
+INSW^A No data fetched for symbol INSW^A using YahooDailyReader |2022-01-24-38-02
+IVR^B No data fetched for symbol IVR^B using YahooDailyReader |2022-01-24-42-18
+IVR^C No data fetched for symbol IVR^C using YahooDailyReader |2022-01-24-42-19
+JPM^C No data fetched for symbol JPM^C using YahooDailyReader |2022-01-24-45-20
+JPM^D No data fetched for symbol JPM^D using YahooDailyReader |2022-01-24-45-22
+JPM^J No data fetched for symbol JPM^J using YahooDailyReader |2022-01-24-45-24
+JPM^K No data fetched for symbol JPM^K using YahooDailyReader |2022-01-24-45-25
+JPM^L No data fetched for symbol JPM^L using YahooDailyReader |2022-01-24-45-26
+JPM^M No data fetched for symbol JPM^M using YahooDailyReader |2022-01-24-45-27
+JW/A Unable to read URL: https://finance.yahoo.com/quote/JW/A/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fJW%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fJW%2fA%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-46-20
+JW/B Unable to read URL: https://finance.yahoo.com/quote/JW/B/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fJW%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fJW%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-46-23
+JWACR 'Date' |2022-01-24-46-27
+KEY^I No data fetched for symbol KEY^I using YahooDailyReader |2022-01-24-48-06
+KEY^J No data fetched for symbol KEY^J using YahooDailyReader |2022-01-24-48-07
+KEY^K No data fetched for symbol KEY^K using YahooDailyReader |2022-01-24-48-09
+KIM^L No data fetched for symbol KIM^L using YahooDailyReader |2022-01-24-48-39
+KIM^M No data fetched for symbol KIM^M using YahooDailyReader |2022-01-24-48-40
+KKR^C No data fetched for symbol KKR^C using YahooDailyReader |2022-01-24-48-59
+KREF^A No data fetched for symbol KREF^A using YahooDailyReader |2022-01-24-50-41
+LAXXR 'Date' |2022-01-24-53-06
+LFT^A No data fetched for symbol LFT^A using YahooDailyReader |2022-01-24-55-43
+LXP^C No data fetched for symbol LXP^C using YahooDailyReader |2022-01-24-02-24
+MAA^I No data fetched for symbol MAA^I using YahooDailyReader |2022-01-24-03-01
+MAAQR 'Date' |2022-01-24-03-05
+MBTCR 'Date' |2022-01-24-05-04
+MCAER 'Date' |2022-01-24-05-25
+MCAFR 'Date' |2022-01-24-05-29
+MER^K No data fetched for symbol MER^K using YahooDailyReader |2022-01-24-07-55
+MET^A No data fetched for symbol MET^A using YahooDailyReader |2022-01-24-08-06
+MET^E No data fetched for symbol MET^E using YahooDailyReader |2022-01-24-08-07
+MET^F No data fetched for symbol MET^F using YahooDailyReader |2022-01-24-08-08
+MFA^B No data fetched for symbol MFA^B using YahooDailyReader |2022-01-24-08-22
+MFA^C No data fetched for symbol MFA^C using YahooDailyReader |2022-01-24-08-23
+MH^A No data fetched for symbol MH^A using YahooDailyReader |2022-01-24-09-33
+MH^C No data fetched for symbol MH^C using YahooDailyReader |2022-01-24-09-34
+MH^D No data fetched for symbol MH^D using YahooDailyReader |2022-01-24-09-35
+MITT^A No data fetched for symbol MITT^A using YahooDailyReader |2022-01-24-10-56
+MITT^B No data fetched for symbol MITT^B using YahooDailyReader |2022-01-24-10-58
+MITT^C No data fetched for symbol MITT^C using YahooDailyReader |2022-01-24-10-58
+MNR^C No data fetched for symbol MNR^C using YahooDailyReader |2022-01-24-12-50
+MPACR 'Date' |2022-01-24-14-21
+MS^A No data fetched for symbol MS^A using YahooDailyReader |2022-01-24-15-53
+MS^E No data fetched for symbol MS^E using YahooDailyReader |2022-01-24-15-55
+MS^F No data fetched for symbol MS^F using YahooDailyReader |2022-01-24-15-56
+MS^I No data fetched for symbol MS^I using YahooDailyReader |2022-01-24-15-57
+MS^K No data fetched for symbol MS^K using YahooDailyReader |2022-01-24-15-58
+MS^L No data fetched for symbol MS^L using YahooDailyReader |2022-01-24-15-59
+MS^O No data fetched for symbol MS^O using YahooDailyReader |2022-01-24-16-00
+MTL^ No data fetched for symbol MTL^ using YahooDailyReader |2022-01-24-17-35
+NCV^A No data fetched for symbol NCV^A using YahooDailyReader |2022-01-24-21-59
+NCZ^A No data fetched for symbol NCZ^A using YahooDailyReader |2022-01-24-22-03
+NEE^N No data fetched for symbol NEE^N using YahooDailyReader |2022-01-24-22-36
+NEE^O No data fetched for symbol NEE^O using YahooDailyReader |2022-01-24-22-37
+NEE^P No data fetched for symbol NEE^P using YahooDailyReader |2022-01-24-22-38
+NEE^Q No data fetched for symbol NEE^Q using YahooDailyReader |2022-01-24-22-39
+NGL^B No data fetched for symbol NGL^B using YahooDailyReader |2022-01-24-24-14
+NGL^C No data fetched for symbol NGL^C using YahooDailyReader |2022-01-24-24-15
+NI^B No data fetched for symbol NI^B using YahooDailyReader |2022-01-24-24-43
+NLY^F No data fetched for symbol NLY^F using YahooDailyReader |2022-01-24-25-52
+NLY^G No data fetched for symbol NLY^G using YahooDailyReader |2022-01-24-25-54
+NLY^I No data fetched for symbol NLY^I using YahooDailyReader |2022-01-24-25-55
+NM^G No data fetched for symbol NM^G using YahooDailyReader |2022-01-24-25-59
+NM^H No data fetched for symbol NM^H using YahooDailyReader |2022-01-24-26-00
+NMK^C No data fetched for symbol NMK^C using YahooDailyReader |2022-01-24-26-14
+NOVVR 'Date' |2022-01-24-27-46
+NREF^A No data fetched for symbol NREF^A using YahooDailyReader |2022-01-24-28-37
+NRZ^A No data fetched for symbol NRZ^A using YahooDailyReader |2022-01-24-29-11
+NRZ^B No data fetched for symbol NRZ^B using YahooDailyReader |2022-01-24-29-12
+NRZ^C No data fetched for symbol NRZ^C using YahooDailyReader |2022-01-24-29-13
+NRZ^D No data fetched for symbol NRZ^D using YahooDailyReader |2022-01-24-29-14
+NS^A No data fetched for symbol NS^A using YahooDailyReader |2022-01-24-29-19
+NS^B No data fetched for symbol NS^B using YahooDailyReader |2022-01-24-29-21
+NS^C No data fetched for symbol NS^C using YahooDailyReader |2022-01-24-29-22
+NSA^A No data fetched for symbol NSA^A using YahooDailyReader |2022-01-24-29-25
+NYCB^A No data fetched for symbol NYCB^A using YahooDailyReader |2022-01-24-33-35
+NYCB^U No data fetched for symbol NYCB^U using YahooDailyReader |2022-01-24-33-36
+OAK^A No data fetched for symbol OAK^A using YahooDailyReader |2022-01-24-34-03
+OAK^B No data fetched for symbol OAK^B using YahooDailyReader |2022-01-24-34-04
+OPP^A No data fetched for symbol OPP^A using YahooDailyReader |2022-01-24-38-21
+OPP^B No data fetched for symbol OPP^B using YahooDailyReader |2022-01-24-38-22
+PBI^B No data fetched for symbol PBI^B using YahooDailyReader |2022-01-24-43-52
+PCG^A No data fetched for symbol PCG^A using YahooDailyReader |2022-01-24-44-25
+PCG^B No data fetched for symbol PCG^B using YahooDailyReader |2022-01-24-44-26
+PCG^C No data fetched for symbol PCG^C using YahooDailyReader |2022-01-24-44-27
+PCG^E No data fetched for symbol PCG^E using YahooDailyReader |2022-01-24-44-28
+PCG^H No data fetched for symbol PCG^H using YahooDailyReader |2022-01-24-44-29
+PCG^I No data fetched for symbol PCG^I using YahooDailyReader |2022-01-24-44-31
+PEARW 'Date' |2022-01-24-46-00
+PEB^E No data fetched for symbol PEB^E using YahooDailyReader |2022-01-24-46-03
+PEB^F No data fetched for symbol PEB^F using YahooDailyReader |2022-01-24-46-04
+PEB^G No data fetched for symbol PEB^G using YahooDailyReader |2022-01-24-46-05
+PEB^H No data fetched for symbol PEB^H using YahooDailyReader |2022-01-24-46-06
+PEI^B No data fetched for symbol PEI^B using YahooDailyReader |2022-01-24-46-31
+PEI^C No data fetched for symbol PEI^C using YahooDailyReader |2022-01-24-46-32
+PEI^D No data fetched for symbol PEI^D using YahooDailyReader |2022-01-24-46-33
+PLYM^A No data fetched for symbol PLYM^A using YahooDailyReader |2022-01-24-51-30
+PMT^A No data fetched for symbol PMT^A using YahooDailyReader |2022-01-24-51-59
+PMT^B No data fetched for symbol PMT^B using YahooDailyReader |2022-01-24-52-01
+PMT^C No data fetched for symbol PMT^C using YahooDailyReader |2022-01-24-52-02
+PNC^P No data fetched for symbol PNC^P using YahooDailyReader |2022-01-24-52-17
+PRE^J No data fetched for symbol PRE^J using YahooDailyReader |2022-01-24-54-14
+PRIF^D No data fetched for symbol PRIF^D using YahooDailyReader |2022-01-24-54-34
+PRIF^F No data fetched for symbol PRIF^F using YahooDailyReader |2022-01-24-54-35
+PRIF^G No data fetched for symbol PRIF^G using YahooDailyReader |2022-01-24-54-36
+PRIF^H No data fetched for symbol PRIF^H using YahooDailyReader |2022-01-24-54-38
+PRIF^I No data fetched for symbol PRIF^I using YahooDailyReader |2022-01-24-54-39
+PRIF^J No data fetched for symbol PRIF^J using YahooDailyReader |2022-01-24-54-41
+PRIF^K No data fetched for symbol PRIF^K using YahooDailyReader |2022-01-24-54-43
+PSA^F No data fetched for symbol PSA^F using YahooDailyReader |2022-01-24-56-01
+PSA^G No data fetched for symbol PSA^G using YahooDailyReader |2022-01-24-56-03
+PSA^H No data fetched for symbol PSA^H using YahooDailyReader |2022-01-24-56-04
+PSA^I No data fetched for symbol PSA^I using YahooDailyReader |2022-01-24-56-05
+PSA^J No data fetched for symbol PSA^J using YahooDailyReader |2022-01-24-56-06
+PSA^K No data fetched for symbol PSA^K using YahooDailyReader |2022-01-24-56-07
+PSA^L No data fetched for symbol PSA^L using YahooDailyReader |2022-01-24-56-09
+PSA^M No data fetched for symbol PSA^M using YahooDailyReader |2022-01-24-56-11
+PSA^N No data fetched for symbol PSA^N using YahooDailyReader |2022-01-24-56-12
+PSA^O No data fetched for symbol PSA^O using YahooDailyReader |2022-01-24-56-13
+PSA^P No data fetched for symbol PSA^P using YahooDailyReader |2022-01-24-56-14
+PSA^Q No data fetched for symbol PSA^Q using YahooDailyReader |2022-01-24-56-15
+PSA^R No data fetched for symbol PSA^R using YahooDailyReader |2022-01-24-56-17
+PSA^S No data fetched for symbol PSA^S using YahooDailyReader |2022-01-24-56-18
+PSB^X No data fetched for symbol PSB^X using YahooDailyReader |2022-01-24-56-26
+PSB^Y No data fetched for symbol PSB^Y using YahooDailyReader |2022-01-24-56-28
+PSB^Z No data fetched for symbol PSB^Z using YahooDailyReader |2022-01-24-56-29
+PSEC^A No data fetched for symbol PSEC^A using YahooDailyReader |2022-01-24-56-32
+PW^A No data fetched for symbol PW^A using YahooDailyReader |2022-01-24-58-35
+RC^C No data fetched for symbol RC^C using YahooDailyReader |2022-01-24-02-06
+RC^E No data fetched for symbol RC^E using YahooDailyReader |2022-01-24-02-07
+RCA 'Date' |2022-01-24-02-09
+RDS/B Unable to read URL: https://finance.yahoo.com/quote/RDS/B/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fRDS%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fRDS%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-03-30
+REXR^B No data fetched for symbol REXR^B using YahooDailyReader |2022-01-24-05-15
+REXR^C No data fetched for symbol REXR^C using YahooDailyReader |2022-01-24-05-16
+RF^B No data fetched for symbol RF^B using YahooDailyReader |2022-01-24-05-25
+RF^C No data fetched for symbol RF^C using YahooDailyReader |2022-01-24-05-26
+RF^E No data fetched for symbol RF^E using YahooDailyReader |2022-01-24-05-28
+RHE^A No data fetched for symbol RHE^A using YahooDailyReader |2022-01-24-06-15
+RLJ^A No data fetched for symbol RLJ^A using YahooDailyReader |2022-01-24-07-37
+RMPL^ No data fetched for symbol RMPL^ using YahooDailyReader |2022-01-24-08-17
+RNR^F No data fetched for symbol RNR^F using YahooDailyReader |2022-01-24-08-44
+RNR^G No data fetched for symbol RNR^G using YahooDailyReader |2022-01-24-08-45
+RPT^D No data fetched for symbol RPT^D using YahooDailyReader |2022-01-24-10-18
+RY^T No data fetched for symbol RY^T using YahooDailyReader |2022-01-24-12-03
+SACH^A No data fetched for symbol SACH^A using YahooDailyReader |2022-01-24-12-43
+SAND           No data fetched for symbol SAND           using YahooDailyReader |2022-01-24-13-34
+SB^C No data fetched for symbol SB^C using YahooDailyReader |2022-01-24-13-58
+SB^D No data fetched for symbol SB^D using YahooDailyReader |2022-01-24-13-59
+SCE^G No data fetched for symbol SCE^G using YahooDailyReader |2022-01-24-15-19
+SCE^H No data fetched for symbol SCE^H using YahooDailyReader |2022-01-24-15-20
+SCE^J No data fetched for symbol SCE^J using YahooDailyReader |2022-01-24-15-21
+SCE^K No data fetched for symbol SCE^K using YahooDailyReader |2022-01-24-15-22
+SCE^L No data fetched for symbol SCE^L using YahooDailyReader |2022-01-24-15-24
+SCHW^D No data fetched for symbol SCHW^D using YahooDailyReader |2022-01-24-15-34
+SCHW^J No data fetched for symbol SCHW^J using YahooDailyReader |2022-01-24-15-36
+SF^B No data fetched for symbol SF^B using YahooDailyReader |2022-01-24-17-56
+SF^C No data fetched for symbol SF^C using YahooDailyReader |2022-01-24-17-57
+SF^D No data fetched for symbol SF^D using YahooDailyReader |2022-01-24-17-58
+SFB 'Date' |2022-01-24-18-00
+SHO^H No data fetched for symbol SHO^H using YahooDailyReader |2022-01-24-19-56
+SHO^I No data fetched for symbol SHO^I using YahooDailyReader |2022-01-24-19-58
+SI^A No data fetched for symbol SI^A using YahooDailyReader |2022-01-24-20-17
+SITC^A No data fetched for symbol SITC^A using YahooDailyReader |2022-01-24-21-14
+SLG^I No data fetched for symbol SLG^I using YahooDailyReader |2022-01-24-22-43
+SNV^D No data fetched for symbol SNV^D using YahooDailyReader |2022-01-24-25-47
+SNV^E No data fetched for symbol SNV^E using YahooDailyReader |2022-01-24-25-49
+SPG^J No data fetched for symbol SPG^J using YahooDailyReader |2022-01-24-27-18
+SPLP^A No data fetched for symbol SPLP^A using YahooDailyReader |2022-01-24-27-45
+SPNT^B No data fetched for symbol SPNT^B using YahooDailyReader |2022-01-24-27-52
+SR^A No data fetched for symbol SR^A using YahooDailyReader |2022-01-24-28-55
+SRC^A No data fetched for symbol SRC^A using YahooDailyReader |2022-01-24-29-03
+SRG^A No data fetched for symbol SRG^A using YahooDailyReader |2022-01-24-29-20
+STAR           No data fetched for symbol STAR           using YahooDailyReader |2022-01-24-30-52
+STAR^D No data fetched for symbol STAR^D using YahooDailyReader |2022-01-24-30-53
+STAR^G No data fetched for symbol STAR^G using YahooDailyReader |2022-01-24-30-55
+STAR^I No data fetched for symbol STAR^I using YahooDailyReader |2022-01-24-30-57
+STL^A No data fetched for symbol STL^A using YahooDailyReader |2022-01-24-31-33
+STRCW 'Date' |2022-01-24-32-02
+STT^D No data fetched for symbol STT^D using YahooDailyReader |2022-01-24-32-31
+STT^G No data fetched for symbol STT^G using YahooDailyReader |2022-01-24-32-32
+STZ/B Unable to read URL: https://finance.yahoo.com/quote/STZ/B/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fSTZ%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fSTZ%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-32-51
+SYF^A No data fetched for symbol SYF^A using YahooDailyReader |2022-01-24-35-29
+T^A No data fetched for symbol T^A using YahooDailyReader |2022-01-24-36-01
+T^C No data fetched for symbol T^C using YahooDailyReader |2022-01-24-36-02
+TDS^U No data fetched for symbol TDS^U using YahooDailyReader |2022-01-24-38-47
+TDS^V No data fetched for symbol TDS^V using YahooDailyReader |2022-01-24-38-48
+TFC^I No data fetched for symbol TFC^I using YahooDailyReader |2022-01-24-40-05
+TFC^O No data fetched for symbol TFC^O using YahooDailyReader |2022-01-24-40-07
+TFC^R No data fetched for symbol TFC^R using YahooDailyReader |2022-01-24-40-08
+TGH^A No data fetched for symbol TGH^A using YahooDailyReader |2022-01-24-40-32
+TGH^B No data fetched for symbol TGH^B using YahooDailyReader |2022-01-24-40-34
+TGP^A No data fetched for symbol TGP^A using YahooDailyReader |2022-01-24-40-42
+TGP^B No data fetched for symbol TGP^B using YahooDailyReader |2022-01-24-40-43
+THACW 'Date' |2022-01-24-41-03
+TNP^D No data fetched for symbol TNP^D using YahooDailyReader |2022-01-24-43-59
+TNP^E No data fetched for symbol TNP^E using YahooDailyReader |2022-01-24-44-00
+TNP^F No data fetched for symbol TNP^F using YahooDailyReader |2022-01-24-44-01
+TRTN^A No data fetched for symbol TRTN^A using YahooDailyReader |2022-01-24-46-40
+TRTN^B No data fetched for symbol TRTN^B using YahooDailyReader |2022-01-24-46-41
+TRTN^C No data fetched for symbol TRTN^C using YahooDailyReader |2022-01-24-46-43
+TRTN^D No data fetched for symbol TRTN^D using YahooDailyReader |2022-01-24-46-45
+TRTN^E No data fetched for symbol TRTN^E using YahooDailyReader |2022-01-24-46-46
+TRTX^C No data fetched for symbol TRTX^C using YahooDailyReader |2022-01-24-46-50
+TWO^A No data fetched for symbol TWO^A using YahooDailyReader |2022-01-24-50-02
+TWO^B No data fetched for symbol TWO^B using YahooDailyReader |2022-01-24-50-03
+TWO^C No data fetched for symbol TWO^C using YahooDailyReader |2022-01-24-50-04
+TY^ No data fetched for symbol TY^ using YahooDailyReader |2022-01-24-50-30
+UBP^H No data fetched for symbol UBP^H using YahooDailyReader |2022-01-24-51-19
+UBP^K No data fetched for symbol UBP^K using YahooDailyReader |2022-01-24-51-21
+UMH^C No data fetched for symbol UMH^C using YahooDailyReader |2022-01-24-52-57
+UMH^D No data fetched for symbol UMH^D using YahooDailyReader |2022-01-24-52-58
+USB^A No data fetched for symbol USB^A using YahooDailyReader |2022-01-24-54-23
+USB^H No data fetched for symbol USB^H using YahooDailyReader |2022-01-24-54-24
+USB^P No data fetched for symbol USB^P using YahooDailyReader |2022-01-24-54-25
+USB^Q No data fetched for symbol USB^Q using YahooDailyReader |2022-01-24-54-26
+USB^R No data fetched for symbol USB^R using YahooDailyReader |2022-01-24-54-28
+VNO^L No data fetched for symbol VNO^L using YahooDailyReader |2022-01-24-01-17
+VNO^M No data fetched for symbol VNO^M using YahooDailyReader |2022-01-24-01-18
+VNO^N No data fetched for symbol VNO^N using YahooDailyReader |2022-01-24-01-20
+VNO^O No data fetched for symbol VNO^O using YahooDailyReader |2022-01-24-01-21
+VOYA^B No data fetched for symbol VOYA^B using YahooDailyReader |2022-01-24-01-49
+VTAQR 'Date' |2022-01-24-03-18
+WAL^A No data fetched for symbol WAL^A using YahooDailyReader |2022-01-24-04-51
+WBS^F No data fetched for symbol WBS^F using YahooDailyReader |2022-01-24-05-30
+WCC^A No data fetched for symbol WCC^A using YahooDailyReader |2022-01-24-05-38
+WFC^A No data fetched for symbol WFC^A using YahooDailyReader |2022-01-24-06-37
+WFC^C No data fetched for symbol WFC^C using YahooDailyReader |2022-01-24-06-38
+WFC^D No data fetched for symbol WFC^D using YahooDailyReader |2022-01-24-06-39
+WFC^L No data fetched for symbol WFC^L using YahooDailyReader |2022-01-24-06-41
+WFC^Q No data fetched for symbol WFC^Q using YahooDailyReader |2022-01-24-06-42
+WFC^R No data fetched for symbol WFC^R using YahooDailyReader |2022-01-24-06-43
+WFC^Y No data fetched for symbol WFC^Y using YahooDailyReader |2022-01-24-06-44
+WFC^Z No data fetched for symbol WFC^Z using YahooDailyReader |2022-01-24-06-46
+WINVR 'Date' |2022-01-24-07-39
+WRB^E No data fetched for symbol WRB^E using YahooDailyReader |2022-01-24-09-27
+WRB^F No data fetched for symbol WRB^F using YahooDailyReader |2022-01-24-09-29
+WRB^G No data fetched for symbol WRB^G using YahooDailyReader |2022-01-24-09-30
+WRB^H No data fetched for symbol WRB^H using YahooDailyReader |2022-01-24-09-32
+WSO/B Unable to read URL: https://finance.yahoo.com/quote/WSO/B/history?period1=1485226800&period2=1643079599&interval=1d&frequency=1d&filter=history
+Response Text:
+b'<html>\n<meta charset=\'utf-8\'>\n<script>\nvar u=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fWSO%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\';\nif(window!=window.top){\n  document.write(\'<p>Content is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t=\'+new Date().getTime()+\'&_R=\'+encodeURIComponent(document.referrer)+\'&err=404&err_url=\'+u+\'" width="0px" height="0px"/>\');\n}else{\n  window.location.replace(u);\n}\n</script>\n<noscript><META http-equiv="refresh" content="0;URL=\'https://www.yahoo.com/?err=404&err_url=https%3a%2f%2ffinance.yahoo.com%2fquote%2fWSO%2fB%2fhistory%3fperiod1%3d1485226800%26period2%3d1643079599%26interval%3d1d%26frequency%3d1d%26filter%3dhistory\'"></noscript>\n</html>\n' |2022-01-24-10-07
+XFLT^A No data fetched for symbol XFLT^A using YahooDailyReader |2022-01-24-12-08
+YCBD^A No data fetched for symbol YCBD^A using YahooDailyReader |2022-01-24-13-48
+HSHIP.OL 'Date' |2022-01-24-22-00
+ROMER.OL 'Date' |2022-01-24-26-42
+BRK.B 'Date' |2022-01-24-33-09
+BF.B 'Date' |2022-01-24-33-49
+RY^T No data fetched for symbol RY^T using YahooDailyReader |2022-01-24-49-46
+SAND           No data fetched for symbol SAND           using YahooDailyReader |2022-01-24-49-50
+Making sharpe portofolios |2022-01-24-52-32
