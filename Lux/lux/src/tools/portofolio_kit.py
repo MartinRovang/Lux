@@ -57,8 +57,6 @@ def iter_portofolio(portofolio_size, all_stock, N_iterations, tradedays = 250):
         # https://quant.stackexchange.com/questions/53992/is-this-methodology-for-finding-the-minimum-variance-portfolio-with-no-short-sel
 
 
-
-
         print('Started iterating...')
         output = {}
         for _ in list(range(N_iterations)):
@@ -66,9 +64,13 @@ def iter_portofolio(portofolio_size, all_stock, N_iterations, tradedays = 250):
             current_portofolio = current_portofolio.dropna()
             if len(current_portofolio.index) > 250:
                 current_portofolio = current_portofolio.iloc[-250:]
-                result = portofolio_metrics(current_portofolio, tradedays = tradedays)
-                result['portofolio'] = current_portofolio.columns.values
-                output[result['sharpe']] = result
+                try:
+                    result = portofolio_metrics(current_portofolio, tradedays = tradedays)
+                    result['portofolio'] = current_portofolio.columns.values
+                    output[result['sharpe']] = result
+                except Exception as e:
+                    print(e)
+                    print('Error with: ', current_portofolio.columns.values)
         
         # sort dictionary by sharpe ratio
         output = {k: v for k, v in sorted(output.items(), key=lambda item: item[1]['sharpe'], reverse=True)}

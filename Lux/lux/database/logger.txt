@@ -1098,3 +1098,34 @@ BF.B 'Date' |2022-01-24-33-49
 RY^T No data fetched for symbol RY^T using YahooDailyReader |2022-01-24-49-46
 SAND           No data fetched for symbol SAND           using YahooDailyReader |2022-01-24-49-50
 Making sharpe portofolios |2022-01-24-52-32
+grab_newest_data_auto function |2022-01-25-32-09
+Making sharpe portofolios |2022-01-25-32-09
+Using make_portofolios function |2022-01-29-12-56
+Using make_portofolios function |2022-01-29-13-31
+Making portofolios |2022-01-29-13-31
+Using make_portofolios function |2022-01-29-16-10
+Making portofolios |2022-01-29-17-00
+Using make_portofolios function |2022-01-29-25-58
+Making portofolios |2022-01-29-26-48
+Using make_portofolios function |2022-01-29-35-43
+Making portofolios |2022-01-29-36-33
+Using make_portofolios function |2022-01-29-45-44
+Making portofolios |2022-01-29-46-34
+Using make_portofolios function |2022-01-29-55-41
+Making portofolios |2022-01-29-56-31
+Using make_portofolios function |2022-01-29-06-09
+Making portofolios |2022-01-29-06-59
+Using make_portofolios function |2022-01-29-16-16
+Making portofolios |2022-01-29-17-06
+Using make_portofolios function |2022-01-29-26-38
+Making portofolios |2022-01-29-27-28
+Using make_portofolios function |2022-01-29-37-06
+Making portofolios |2022-01-29-37-56
+Using make_portofolios function |2022-01-29-46-11
+Making portofolios |2022-01-29-47-01
+Using make_portofolios function |2022-01-29-55-12
+Making portofolios |2022-01-29-56-02
+Using make_portofolios function |2022-01-29-04-23
+Making portofolios |2022-01-29-05-13
+Using make_portofolios function |2022-01-29-13-30
+Making portofolios |2022-01-29-14-20

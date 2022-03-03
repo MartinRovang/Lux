@@ -9,8 +9,8 @@ import portofolio_kit
 import itertools
 import time
 
-# path = '/code/backgroundtasks/tools/database'
-path = '../../database'
+path = '/code/backgroundtasks/tools/database'
+# path = '../../database'
 
 def logger(text):
     with open(f'{path}/logger.txt', 'a') as f:
@@ -41,7 +41,7 @@ def make_portofolios():
             all_data_prices = pickle.load(open(f'{path}/stockprices/all_stock_values_{end}.pkl', 'rb'))
             all_data_prices_returns = all_data_prices.pct_change()
             portofolio_size = 10
-            output = portofolio_kit.iter_portofolio(portofolio_size, all_data_prices_returns, N_iterations = 100_000)
+            output = portofolio_kit.iter_portofolio(portofolio_size, all_data_prices_returns, N_iterations = 700_000)
             if os.path.exists(f'{path}/stockprices/sharpes_ports_{end}.pkl'):
                 data  = pickle.load(open(f'{path}/stockprices/sharpes_ports_{end}.pkl', 'rb'))
                 data = data.update(output)
