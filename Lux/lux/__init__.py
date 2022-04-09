@@ -7,7 +7,6 @@ import os
 app = FastAPI()
 
 
-
 @app.get("/")
 async def read_root():
     return {'hello': 'world'}
@@ -18,6 +17,7 @@ async def portofolio(filter: str = "weight gt -0.5 and std lt 0.5 and tot = 250"
     # http://127.0.0.1:8000/portofolios/?filter=weight gt -0.5 and std lt 0.5
     filter_types = filter.split(" and ")
     filter_operations = [x.split(" ") for x in filter_types]
+
 
     end = tuple(np.array(dt.datetime.now().strftime('%Y-%m-%d').split('-')).astype('int'))
 

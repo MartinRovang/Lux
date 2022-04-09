@@ -2,6 +2,11 @@ import numpy as np
 import pandas as pd
 import pickle
 from pandas.core.frame import DataFrame
+from pypfopt import EfficientFrontier, plotting
+from pypfopt import risk_models
+from pypfopt import expected_returns
+from pypfopt import objective_functions
+
 
 def portofolio_metrics(portofolio:DataFrame, weights:list = [], tradedays:int = 250, optimweights:bool = True):
         """
@@ -66,6 +71,19 @@ def iter_portofolio(portofolio_size, all_stock, N_iterations, tradedays = 250):
                 current_portofolio = current_portofolio.iloc[-250:]
                 try:
                     result = portofolio_metrics(current_portofolio, tradedays = tradedays)
+                    print(result)
+                    # mu = expected_returns.mean_historical_return(result)
+                    # S = risk_models.sample_cov(data)
+
+                    # # Optimize for maximal Sharpe ratio
+                    # ef = EfficientFrontier(mu, S)
+                    # # raw_weights = ef.max_sharpe()
+
+                    # ef.add_objective(objective_functions.L2_reg, gamma=1)
+                    # ef.max_sharpe()
+                    # ef.min_volatility()
+
+                    # cleaned_weights = ef.clean_weights()
                     result['portofolio'] = current_portofolio.columns.values
                     output[result['sharpe']] = result
                 except Exception as e:

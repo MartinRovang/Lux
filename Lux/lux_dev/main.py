@@ -7,6 +7,8 @@ from lux_dev import stocksaver
 
 
 p = portofolio_manager.Portofolio()
+p.make_optimized_portofolio()
+
 # p.look_for_betterment(weights = [0.33494, 0.06668, 0.05, 0.05, 0.14806, 0.20032, 0.05, 0.05, 0.05])
 # Samira
 # p.add_ticker('MORG.OL')
@@ -31,16 +33,16 @@ p = portofolio_manager.Portofolio()
 
 
 # 10 stocks port test
-p.add_ticker('SOON.OL')
-p.add_ticker('JAREN.OL')
-p.add_ticker('SNI.OL')
-p.add_ticker('MOWI.OL')
-p.add_ticker('POL.OL')
-p.add_ticker('MORG.OL')
-p.add_ticker('ODFB.OL')
-p.add_ticker('NSKOG.OL')
-p.add_ticker('BELCO.OL')
-p.get_portofolio_stats(buy_date = (2022, 1 , 3), buy_point = 1.559 , years = 1, weights = [0.33494, 0.06668, 0.05, 0.05, 0.14806, 0.20032, 0.05, 0.05, 0.05])
+# p.add_ticker('SOON.OL')
+# p.add_ticker('JAREN.OL')
+# p.add_ticker('SNI.OL')
+# p.add_ticker('MOWI.OL')
+# p.add_ticker('POL.OL')
+# p.add_ticker('MORG.OL')
+# p.add_ticker('ODFB.OL')
+# p.add_ticker('NSKOG.OL')
+# p.add_ticker('BELCO.OL')
+# p.get_portofolio_stats(buy_date = (2022, 1 , 3), buy_point = 1.559 , years = 1, weights = [0.33494, 0.06668, 0.05, 0.05, 0.14806, 0.20032, 0.05, 0.05, 0.05])
 
 # OrderedDict([('SOON.OL', 0.33494), ('JAREN.OL', 0.06668), ('SNI.OL', 0.05), ('MOWI.OL', 0.05), ('POL.OL', 0.14806), ('MORG.OL', 0.20032), ('ODFB.OL', 0.05), ('NSKOG.OL', 0.05), ('BELCO.OL', 0.05)])
 # Expected annual return: 44.7%

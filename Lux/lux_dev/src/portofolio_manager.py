@@ -15,9 +15,10 @@ from rich.progress import track
 import scipy
 import pandas as pd
 import warnings
-from pypfopt import EfficientFrontier
+from pypfopt import EfficientFrontier, plotting
 from pypfopt import risk_models
 from pypfopt import expected_returns
+from pypfopt import objective_functions
 
 def regress_input(y, N = 30):
     """[summary]
@@ -123,7 +124,7 @@ class Portofolio:
     
 
     def get_returns_from_prices(self, df):
-        returns = df['Adj Close'].pct_change().dropna()
+        returns = df['Adj Close'].dropna()
         return returns
 
 
@@ -145,6 +146,8 @@ class Portofolio:
         best_sharpe = 0
         worst_sharpe = 1
         worst_result = []
+        best_sharpe = 1
+        result = {'sharpe': 0, 'portofolio': [], 'weights': 0}
         if portofolio_size == None:
             portofolio_size_iter = 20
             for portsize in range(4, portofolio_size_iter+1):
@@ -163,14 +166,34 @@ class Portofolio:
             for iteration in track(list(range(N)), description='Optimizing...'):
                 current_portofolio = all_stock.sample(n = portofolio_size, replace = False, axis = 1)
 
-                result = self.portofolio_metrics(current_portofolio, benchmark)
+                mu = expected_returns.mean_historical_return(current_portofolio)
+                S = risk_models.sample_cov(current_portofolio)
+
+                # Optimize for maximal Sharpe ratio
+                ef = EfficientFrontier(mu, S, weight_bounds=[0.05, 1])
+                # raw_weights = ef.max_sharpe()
+
+                ef.add_objective(objective_functions.L2_reg, gamma=1)
+                # ef.max_sharpe()
+                ef.min_volatility()
+                # result = self.portofolio_metrics(current_portofolio, benchmark)
+
+                annual_return, annual_volatility, sharpe = ef.portfolio_performance(verbose=False)
                 
                 result['portofolio'] = current_portofolio
-                if result['sharpe'] > best_sharpe and ((result['weights']>0).sum() == len(result['weights'])):
+                result['weights'] = ef.clean_weights()
+                result['sharpe'] = float(sharpe)
+                result['annual_return'] = float(annual_return)
+                result['annual_volatility'] = float(annual_volatility)
+
+                if result['sharpe'] > best_sharpe:
                     best_sharpe = result['sharpe']
                     result_best = result
+                    print(f'Best sharpe: {sharpe}')
+                    print(f"Return: {result['annual_return']}")
+                    print(f'Best Portofolio: {result_best["weights"]}')
                     
-                if (result['sharpe'] < worst_sharpe) and ((result['weights']>0).sum() == len(result['weights'])):
+                if result['sharpe'] < worst_sharpe:
                     worst_sharpe = result['sharpe']
                     worst_result = result
         
@@ -190,7 +213,7 @@ class Portofolio:
         self.intfc.print_regular(f"----BEST PORTOFOLIO STOCKS [N = {len(result_best['portofolio'].columns.values)}]----", color = 'green')
         self.intfc.print_regular(f"{result_best['portofolio'].columns.values}", color = 'cyan')
         self.intfc.print_regular("----BEST WEIGHTS----", color = 'cyan')
-        self.intfc.print_regular(f"{[round(weight, 4) for weight in result_best['weights']]}", color = 'green')
+        self.intfc.print_regular(f"{[round(weight, 4) for weight in result_best['weights'].values()]}", color = 'green')
         self.intfc.print_regular("----ADDITIONAL METRICS----", color = 'cyan')
         self.intfc.print_regular(f"Expected annual return: {result_best['mean']*100:.3f} %", color = 'yellow')
         self.intfc.print_regular(f"Annual volatility: {result_best['std']*100:.3f} %", color = 'yellow')
@@ -200,7 +223,7 @@ class Portofolio:
         self.intfc.print_regular(f"----WORST PORTOFOLIO STOCKS [N = {len(['portofolio'].columns.values)}]----", color = 'red')
         self.intfc.print_regular(f"{worst_result['portofolio'].columns.values}", color = 'red')
         self.intfc.print_regular("----BEST WEIGHTS----", color = 'cyan')
-        self.intfc.print_regular(f"{[round(weight, 4) for weight in worst_result['weights']]}", color = 'red')
+        self.intfc.print_regular(f"{[round(weight, 4) for weight in worst_result['weights'].values()]}", color = 'red')
         self.intfc.print_regular("----ADDITIONAL METRICS----", color = 'cyan')
         self.intfc.print_regular(f"Expected annual return: {worst_result['mean']*100:.3f} %", color = 'yellow')
         self.intfc.print_regular(f"Annual volatility: {worst_result['std']*100:.3f} %", color = 'yellow')
@@ -232,6 +255,10 @@ class Portofolio:
         symbols_not_loaded = []
         all_stock = pd.DataFrame()
         all_data_prices = pd.DataFrame()
+        all_stocks_OSLO_symbols = all_stocks_OSLO_symbols[all_stocks_OSLO_symbols.str.contains("ANORA.OL") == False]
+        all_stocks_OSLO_symbols = all_stocks_OSLO_symbols[all_stocks_OSLO_symbols.str.contains("SKI.OL") == False]
+        all_stocks_OSLO_symbols = all_stocks_OSLO_symbols[all_stocks_OSLO_symbols.str.contains("SOLON.OL") == False]
+        all_stocks_OSLO_symbols = all_stocks_OSLO_symbols[all_stocks_OSLO_symbols.str.contains("SOHO.OL") == False]
         for stocksymbol in track(all_stocks_OSLO_symbols, description='Grabbing latest data from all stocks...'):
             fetched = fetch_info(stocksymbol, (end[0]-self.years,end[1],end[2]), end)
             if type(fetched) == bool:
@@ -265,7 +292,7 @@ class Portofolio:
 
 
 
-    def make_optimized_portofolio(self, N = 100000, portofolio_size = 5, years = 3, tradedays = 250):
+    def make_optimized_portofolio(self, N = 100000, portofolio_size = 10, years = 3, tradedays = 250):
         #https://live.euronext.com/en/markets/oslo/equities/list
         """
 
@@ -291,9 +318,13 @@ class Portofolio:
         benchmark = fetch_info("^GSPC", (end[0]-years,end[1],end[2]), end)[-self.tradedays*self.years:]
         self.timespan = len(benchmark)
         benchmark = self.get_returns_from_prices(benchmark)
-
-        all_stock, symbols_not_loaded = self.grab_symbols_from_yahoo(all_stocks_OSLO_symbols, end, benchmark)
-
+        symbols_not_loaded = []
+        if not os.path.isfile(f'lux_dev/database/stockprices/all_stock_vals{end}.pkl'):
+            all_stock, symbols_not_loaded, all_data_prices = self.grab_symbols_from_yahoo(all_stocks_OSLO_symbols, end, benchmark)
+            pickle.dump(all_stock, open(f'lux_dev/database/stockprices/all_stock_vals{end}.pkl', 'wb'))
+        else:
+            all_stock = pickle.load(open(f'lux_dev/database/stockprices/all_stock_vals{end}.pkl', 'rb'))
+        
         result_best, worst_result = self.iter_portofolio(portofolio_size, all_stock, benchmark, N)
         self.print_optimized_port_results(result_best, worst_result, all_stock, symbols_not_loaded)
 
